@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lexical Scope & Closures</title>
+    <style>
+      .button {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 3%;
+      }
+      button {
+        padding: 10px 15px;
+        margin-right: 10px;
+      }
+      .desc {
+        width: 100%;
+        margin-top: 3%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      span {
+        width: 70%;
+        background: rgba(237, 237, 237, 0.2);
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="button">
+      <button id="Yellow">Yellow</button>
+      <button id="Green">Green</button>
+    </div>
+    <div class="desc">
+      <span>
+        <h3>Lexical Scopes</h3>
+        Lexical scope determines the accessibility of variables and functions
+        within a nested code structure. The lexical scope is established at the
+        time of code compilation and remains unchanged during runtime. Nested
+        functions have access to variables from their enclosing functions, but
+        not vice versa.
+        <h3>Closures</h3>
+        A closure is a function that remembers and has access to its surrounding
+        scope, even after the outer function has returned. This means that a
+        closure can access and modify variables from its outer scope, even when
+        those variables are no longer in scope within the outer function.
+        <h3>Relationship between Closures and Lexical Scopes</h3>
+        Closures and lexical scopes are closely related concepts. Closures are
+        possible because of lexical scopes. Lexical scopes determine which
+        variables a function has access to, and closures utilize this access to
+        retain references to those variables.
+      </span>
+    </div>
+  </body>
+  <script>
+    document
+      .querySelector("#Yellow")
+      .addEventListener("click", handleClick("goldenrod"));
+    document
+      .querySelector("#Green")
+      .addEventListener("click", handleClick("Green"));
+    function handleClick(color) {
+      return function () {
+        document.body.style.background = color;
+      };
+    }
+  </script>
+</html>

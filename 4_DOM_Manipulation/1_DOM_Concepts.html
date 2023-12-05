@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM Manipulation Learning</title>
+  </head>
+  <body>
+    <div id="wrapper" class="parent">
+      <div class="day">Monday</div>
+      <div class="day">Tuesday</div>
+      <div class="day">Wednesday</div>
+      <div class="day">Thursday</div>
+      <div class="day">Friday</div>
+      <div class="day">Saturday</div>
+      <div class="day">Sunday</div>
+    </div>
+  </body>
+  <script>
+    /* Script tag is used to write JS code inside HTML document. It is a good practice to include script
+    after body tag*/
+    // Selecting/Acessing an element
+    // // 1- through getElementById()
+    // document.getElementById("wrapper");
+    // // 2- through getElementByClass()
+    // document.getElementsByClassName("parent");
+    // // 3- through getElementByTagName()
+    // document.getElementsByTagName("div");
+    // // 4- through querySelector(), it returns only first matching element
+    // document.querySelector(".parent");
+    // // 5- through querySelectorAll(), it returns all matching elements
+    // document.querySelectorAll(".day");
+
+    // Adding/Manipulating Styles
+    const wrapper = document.querySelector(".parent");
+    /* In wrapper varibale, we stored div with classname "parent". We can manipulate it's styling by
+    `.style` proprety.*/
+    wrapper.style.backgroundColor = "#212121";
+    wrapper.style.color = "#ffff";
+    wrapper.style.padding = "20px";
+
+    // Accessing child Elements
+    console.log(wrapper.children);
+    console.log(wrapper.firstElementChild);
+    console.log(wrapper.lastElementChild);
+    /*".children" property returns HTMLCollection of all child elements of targeted element.
+    We can further use `firstElementChild` and `lastElementChild` to access first or last child
+    elements of the targeted element.*/
+    /*As .children property returns HTMLCollection of all child elements, we can access them with array's
+    bracket notation syntax and we can use loop on this collection */
+    const childrenOfWrapper = wrapper.children;
+    console.log(childrenOfWrapper[1]);
+    // we can access each element in childrenOfWraper using for loop
+    for (let i = 0; i < childrenOfWrapper.length; i++) {
+      console.log(childrenOfWrapper[i]);
+    }
+    // to use higher order or functional loops on childrenOfWrapper, we have to convert it in Array
+    // similary we can manipulate or add styles in child elements
+    childrenOfWrapper[2].style.color = "orange";
+
+    /*We can also access parent element from child element*/
+    const firstDay = document.querySelector(".day"); // querySelector returns first matching class element
+    console.log(firstDay.parentElement); // returns parent element
+    // we can also access sibling elements
+    console.log(firstDay.previousSibling);
+    console.log(firstDay.nextElementSibling);
+
+    // Creating a new element
+    const div = document.createElement("div");
+    // created an element using createElement, now we can perform all DOM manilpulation methods on it
+    div.className = "second"; // sets the "class" attribute
+    div.id = "1"; // sets "id" attribute
+    // setAttribute() accepts 2 parameters, attribute name and value of that attribut
+    div.setAttribute("title", "title of div");
+
+    div.innerHTML = "<h3>Div created with code</h3>";
+    // similary we can add styles to our newly created element
+    div.style.backgroundColor = "#9acd32";
+    div.style.padding = "20px";
+    div.style.marginTop = "150px";
+    div.style.color = "black";
+    div.style.textAlign = "center";
+
+    wrapper.appendChild(div); //this adds our newly created "div" in the div with "wrapper" class
+  </script>
+</html>

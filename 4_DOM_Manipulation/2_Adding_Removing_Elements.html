@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add & Remove Languages</title>
+  </head>
+  <body style="background-color: #212121; color: #ffff">
+    <ul class="language">
+      <li>Javascript</li>
+    </ul>
+    <!-- <input
+      type="text"
+      class="input-language"
+      style="width: 30%; padding: 10px; border: none; cursor: text"
+      placeholder="Enter language you want to add.."
+    />
+    <button></button> -->
+  </body>
+  <script>
+    //let's create a function that add a list item in HTML
+    function addLanguage(languageName) {
+      const listItem = document.createElement("li");
+      listItem.innerHTML = languageName;
+      document.querySelector(".language").appendChild(listItem);
+    }
+    addLanguage("Python");
+    addLanguage("CSS");
+    /* We can append this listItem into 'ul' with className ".language" using addLanguage()
+      But it is not optimal way, because ".innerHTML" this method has to traverse all of the list and then 
+      it will append listItem in last. In case there are 1000's of existing items in the list, then this 
+      method will take a significant time to traverse and append*/
+
+    /* the more optimal way is to create a Text Node, assign languageName value to it, and append this 
+    text node to listItem. It works the same but more optimally*/
+    function addLanguageOptimal(languageName) {
+      const listItem = document.createElement("li");
+      listItem.appendChild(document.createTextNode(languageName));
+      document.querySelector(".language").appendChild(listItem);
+    }
+    addLanguageOptimal("Typescript");
+    addLanguageOptimal("PHP");
+
+    // Editing/changing values
+    /*the following function will take two params, 
+    1- itemNumber: the position number of value in list.(starting from 1)
+    2- newValue: new value/text of that item
+    Then it will select that particular listItem and change it's value in optimal way*/
+    function editLanguage(itemNumber, newValue) {
+      const languageItem = document.querySelector(
+        `li:nth-child(${itemNumber})`
+      );
+      const newItem = document.createElement("li");
+      newItem.appendChild(document.createTextNode(newValue));
+      languageItem.replaceWith(newItem); // it replace our newly created element with old one
+    }
+    editLanguage(1, "C++");
+
+    // Removing an element
+    function removeLanguage(itemNumber) {
+      const languageItem = document.querySelector(
+        `li:nth-child(${itemNumber})`
+      );
+      languageItem.remove();
+    }
+
+    removeLanguage(3);
+    removeLanguage(2);
+  </script>
+</html>

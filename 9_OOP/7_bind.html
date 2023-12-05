@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bind in JS</title>
+  </head>
+  <style>
+    .button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    button {
+      padding: 10px 15px;
+      margin-top: 10px;
+      font-size: 16px;
+      color: white;
+      border: 1px solid rgb(239, 239, 239);
+      background-color: rgb(31, 104, 141);
+      border-radius: 10px;
+      box-shadow: 5px;
+    }
+    .text {
+      width: 100%;
+      margin-top: 3%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    code {
+      font-weight: bold;
+      font-size: normal;
+      padding: 5px;
+      background-color: rgba(174, 174, 174, 0.355);
+    }
+    .text span {
+      width: 70%;
+      padding: 15px;
+      border: none;
+      border-radius: 3px;
+      background-color: rgb(250, 250, 250, 0.3);
+      justify-content: baseline;
+    }
+    h3 {
+      display: block;
+      font-size: 1.07em;
+      margin-block-start: 0.3em;
+      margin-block-end: 0.3em;
+      margin-inline-start: 0px;
+      margin-inline-end: 0px;
+      font-weight: bold;
+    }
+  </style>
+  <body>
+    <div class="button"><button>Button Clicked</button></div>
+    <div class="text">
+      <span>
+        To understand <code>bind()</code> in JS, it would be a better approach
+        to understand with an example scenerio.
+        <h3>Scenerio:</h3>
+        We are making a Library class. It's constructor has values like
+        <code>this.library</code> and <code>this.server</code>. Library class
+        has a function <code>handleClick()</code> which prints "click" in
+        console.
+        <h3>Business Requirement:</h3>
+        On click of the button 'Button Clicked', <code>this.library</code> OR
+        <code>this.server</code>
+        in the constructor function should print in console.
+        <h3>Approach:</h3>
+        In the constructor function, we take a reference of 'Button Clicked'
+        button with <code>document</code> and added the click event listner to
+        it, it will take <code>handleClick()</code> function as argument. In
+        <code>handleClick()</code> function, we will print
+        <code>this.library</code> OR <code>this.server</code>
+        <h3>Problem:</h3>
+        By above approach, it should print <code>this.library</code> OR
+        <code>this.server</code>, but they are not being printed. Instead,
+        <code>undefined</code> is being printed.
+        <h3>Reason:</h3>
+        If <code>this.library</code> OR <code>this.server</code> are not
+        printing, it means their reference could be lost or not properly passed.
+        <h3>Solution:</h3>
+        <code>bind()</code> method comes handy in these scenerios where we bind
+        the references together, so they could be properly passed
+      </span>
+    </div>
+  </body>
+  <script>
+    class Library {
+      constructor() {
+        this.library = "JS Library";
+        this.server = "http://127.0.0.1:5500/9_OOP/bind.html";
+        document
+          .querySelector("button")
+          .addEventListener("click", this.handleClick.bind(this));
+      }
+      handleClick() {
+        console.log("Button Click");
+        console.log(this.server);
+      }
+    }
+
+    const app = new Library();
+  </script>
+</html>

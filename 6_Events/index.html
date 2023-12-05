@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events in DOM</title>
+  </head>
+  <body style="background-color: #414141; color: aliceblue">
+    <h2>Some Images</h2>
+    <div>
+      <ul id="images">
+        <li>
+          <img
+            width="200px"
+            id="photoshop"
+            src="https://images.pexels.com/photos/2244330/pexels-photo-2244330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            alt="photoshop"
+          />
+        </li>
+        <li>
+          <img
+            width="200px"
+            id="japan"
+            src="https://images.pexels.com/photos/301614/pexels-photo-301614.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            alt=""
+          />
+        </li>
+        <li>
+          <img
+            width="200px"
+            id="river"
+            src="https://images.pexels.com/photos/709552/pexels-photo-709552.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            alt=""
+          />
+        </li>
+        <li>
+          <img
+            width="200px"
+            id="owl"
+            src="https://images.pexels.com/photos/1564839/pexels-photo-1564839.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            alt=""
+          />
+        </li>
+        <li>
+          <img
+            width="200px"
+            id="prayer"
+            src="https://images.pexels.com/photos/2989625/pexels-photo-2989625.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            alt=""
+          />
+        </li>
+        <li>
+          <a style="color: aliceblue" href="https://google.com" id="google">
+            Google
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+  <script>
+    /* Events are usually linked to user interactivity, when a user clicks, selects, submits, moves mouse,
+    scrolls etc on a page, events are triggered. JS provides variaty of events. To add a specific event
+    like "click", we can use following approaches
+    1- using onClick() methode
+    document.querySelector("#owl").onClick = function (){ alret("owl") }
+    But this approach provides limited control and features, more better approach is to use
+    addEventListner()*/
+    // 2- using addEventListner. it takes 2 arguments, first one specifies the type of event and second is
+    // a callback function which contains code to execute on that specific event
+    // const owlImage = document.querySelector("#owl");
+    // owlImage.style.cursor = "pointer";
+    // owlImage.addEventListener(
+    //   "click",
+    //   (e) => {
+    //     alert("owl");
+    //   },
+    //   false
+    // );
+    /* we see "event" or "e" paramter in callback function, it is basically event object. It contains
+      all the information related to every possible event that could be applied. We can see it via
+      console.log(e).
+      In addition to addEventLitner(), there was an attachEventLintner() in times internet Explorer*/
+    /* We gave a third parameter "false" in addEventListner(). It is denoting the value of Event Propagation
+    By default it's false so mostly we don't pass it. There are two types of event propagations*/
+
+    // 1- Event Bubbling: It is default behaviour, if we pass "false" or nothing as value of event propagation, based on following code, console will first print "Owl Clicked", and then "Image Clicked"
+    // 2- Event Capturing: It is default behaviour, if we pass "true" as value of event propagation, based on following code, console will first print "Image Clicked", and then "Owl Clicked"
+
+    // to stop event propagation, we use stopPropagation() methode on event object
+    // document.querySelector("#images").addEventListener(
+    //   "click",
+    //   () => {
+    //     console.log("Image Clicked");
+    //   },
+    //   true
+    // );
+    // owlImage.addEventListener(
+    //   "click",
+    //   (event) => {
+    //     console.log("Owl Clicked");
+    //     //event.stopPropagation();
+    //   }
+    //   //true
+    // );
+
+    // to stop the default behaviour of an element, we can use preventDefault.
+    // For example, if we don't want to get redirected to google.com on click
+    // document.querySelector("#google").addEventListener("click", (e) => {
+    //   e.preventDefault();
+    //   console.log("Google link clicked");
+    // });
+
+    // Task is to hide the image when clicked on it
+    document.querySelector("#images").addEventListener("click", (e) => {
+      /* Now as we are targeting the whole list, when user will click any other thing like bullet point
+      or our google link, the whole list will get removed, that is called Event spillover. To prevent
+      the spillover, we have to narrow down our target to img tag only and apply some checks*/
+      let removeImage = e.target.parentNode;
+      if (e.target.tagName === "IMG") {
+        //simple approach
+        removeImage.remove();
+        // another approach
+        //removeImage.parentNode.removeChild(removeImage);
+      }
+    });
+  </script>
+</html>
