@@ -1,9 +1,31 @@
+/**
+ * Declares variables using different declaration keywords and highlights best practices.
+ *
+ * @type {number}
+ * @const
+ * @description A unique identifier, typically representing a user or entity.
+ */
 const id = 12223;
+// id = 23335; // This assignment is invalid because `id` is declared as `const`.
+/**
+ * @type {string}
+ * @description The user's email address.
+ */
 let email = "raza@yahoo.net";
-var password = "";
-city = "Multan";
 
-// id = 23335; this can't be done because 'const' cannot be changed
-// 'var' has problems related to scopes (function and block scope) so it is recommended to not use it.
-// using 'let' instead of 'var' is a good practice
-// variables can also be declared without 'let' or 'const' but its a bad practice
+/**
+ * @type {string}
+ * @deprecated Avoid using `var` due to potential scoping issues. Use `let` or `const` instead.
+ */
+var password = "";
+
+/**
+ * @type {string}
+ * @description The user's city of residence.
+ * @example city = "Karachi"; // Example of valid assignment
+ * @example city = 25; // Example of invalid assignment (type mismatch)
+ * @example city; // Example of accessing the city value
+ */
+let city = "Multan";
+
+
