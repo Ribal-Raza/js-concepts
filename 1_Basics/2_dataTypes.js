@@ -1,18 +1,51 @@
-/* 1- "use strict" it is used to tell the engine/browser (Node.js or v8 or others) to treat code as newer version of JS
-2-  alert("Hello"), this line of code will produce error while running script on Node.js, but in browser console this line will generate a browser alert popup*/
+/**
+ * Demonstrates strict mode, data types, and the `typeof` operator.
+ *
+ * @remarks
+ * - Employs "use strict" to enforce stricter code handling and catch potential errors.
+ * - Explores various JavaScript data types and their characteristics.
+ * - Highlights the `typeof` operator's usage for determining variable data types.
+ */
 
-/* JS doesnot provides any specification to add to the variable which shows it's data type.
-It infers the data-type from the value assigned to variable */
-let name = "Ribal"; // 1- "string" data type
-let age = "24"; // 2- "number" data type
-let isAdult = true; // 3- "boolean" data type, it's value can be true or false
+"use strict";
 
-/* 4- 'BigInt' is also a data type in JS to represent large number. BigInt values are similar to Number values in some ways, but also differ in a few key matters. The can be defined using 
-BigInt(9007199254740991) or putting an 'n' at the end of value like 9007199254740991n */
-// 5- 'null' a data type and it is representation of empty value. It itself is an Object
-// 6- 'undefined' is representation of value not defined
-// 7- 'symbol' is used for showing uniquness of a component
-// 8- 'object' is a collection of different types with Key-Value pairs or functions
+/**
+ * @type {string}
+ * @description The user's name.
+ */
+let name = "Ribal";
 
-console.log(typeof isAdult); // 'typeof' is used to find data type
-console.log(typeof null); //typeof null is an object, some people say that this an error of JS
+/**
+ * @type {number}
+ * @description The user's age.
+ */
+let age = "24"; // While initially a string, this can be converted to a number using parseInt() or parseFloat() if numeric operations are intended.
+
+/**
+ * @type {boolean}
+ * @description Indicates whether the user is an adult.
+ */
+let isAdult = true;
+
+// Examples of other data types:
+
+// BigInt:
+const largeNumber = 9007199254740991n;
+
+// null:
+let emptyValue = null;
+
+// undefined:
+let undeclaredVariable; // Initialized as undefined
+
+// symbol:
+const uniqueKey = Symbol("myUniqueKey");
+
+// object:
+const person = { name, age, isAdult };
+
+/**
+ * Logs the data type of variables using the `typeof` operator.
+ */
+console.log(typeof isAdult); // Output: "boolean"
+console.log(typeof null);   // Output: "object" (historical quirk, treated as a primitive value)
