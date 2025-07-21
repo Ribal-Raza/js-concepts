@@ -1,4 +1,7 @@
 /**
+ * @fileoverview Variables in Javascript
+ */
+/**
  * Variables are like labeled boxes in programming that hold different types of information.
  * They give names to data, making it easy to use and change that data throughout the code.
  */
