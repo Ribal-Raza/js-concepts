@@ -32,6 +32,7 @@ console.log(`Am I expert in ${programmingLanguage} ? ${expert}`);
 // This is the most modern way to write and manipulate strings in JS
 
 // Another way of declaring string with String constructor
+// This method is for dedicatingly defining the data type of the variable
 const programmingLanguage2 = new String("Typescript");
 // The above example programmingLanguage2 is an interesting one.
 // If we print it on node.js cosole it will output
