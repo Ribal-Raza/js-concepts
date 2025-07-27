@@ -1,109 +1,202 @@
-/* Object is a collection of key-value pairs, or functions. Object is 'singleton' (it means there wouldbe a single instance of that object) if it is created using constructor Object.create, otherwise
-there will be multiple instances and they are called object literals */
-const users = {
-  user1: "Raza",
-  user1Age: 24,
-  isUser1Adult: true,
-  user2: "Ahmad",
-  user2Age: 27,
-  isUser2Adult: true,
-  user3: "Hamid",
-  user3Age: 17,
-  isUser3Adult: false,
-  user4: "Kashi",
-}; // this is an object literal
-// key : value, value can of any data type. Key is processed as string in JS
+/**
+ * @fileoverview Objects in Javascript
+ */
 
-// Ways of Acessing Object's key value pairs
-// 1- dot notation, objectName.key
-console.log(users.user1, users.user1Age);
-// 2- bracket notation, objectName["key"]
-console.log(users["user1"], users["user1Age"]);
-/* Sometimes the key is written in strings like "user1": "Ribal", in that case we can only be accessed
- user1 with bracket notation */
-
-// Adding symbol in object. We know symbol is a unique data type, follwing is the way to use it as key
-const idOfObject = Symbol("id");
-const userObject = {
-  [idOfObject]: 1, // symbol as key is written in square brackets
-  name: "Raza",
-  age: 24,
-  isLoggedIn: true,
-  email: "ribalraza1@gmail.com",
+// In JavaScript, objects can be seen as a collection of properties.
+// object properties are collection of key-value pairs.
+// There are two ways to define object.
+// singleton
+// Object.create();
+// object literals
+const jsUser = {
+  name: "Developer",
+  skills: ["JS", "Python", "Frontend", "Backend"],
 };
+// in jsUser object, name and skills are keys
+// keys are by default of string type.
+// and value can of any data type
 
-// Adding other key value pairs in objects
-userObject.loginDays = ["Monday", "Thursday", "Friday"]; // Adding loginDays as key and array of days as value in userObject
-console.log(userObject); //it will show updated userObject with login days
-
-// Adding function in Object
-userObject.greeting = function () {
-  console.log(`Hello`);
+// acessing object propertise
+// dot notation
+console.log(`Value with key "name" is: ${jsUser.name}`);
+// bracket notation, the key should be in quotes
+console.log(`Value with key "skills" is: ${jsUser["skills"]}`);
+// both dot and bracket notation are correct
+// Sometimes you have no choice but to go with bracket notation
+const user = {
+  name: "Developer",
+  "full Name": "Full Stack Developer",
+  isLoggedIn: false,
+  loginHistory: ["Monday", "Friday"],
 };
-console.log(userObject); // userObject will be updated with the function
-userObject.greeting(); // Acessing function
+console.log(`Value with key "skills" is: ${user.name}`);
+console.log(`Value with key "full Name" is: ${user["full Name"]}`); // here you can't access like user.full name
 
-// Acessing values in function within object
-userObject.greeting2 = function () {
-  console.log(`Hello ${this.name}`);
-}; // 'this' keyword refers to the object in which function is placed
-userObject.greeting2();
+// Symbol data type can also be defined in object as keys
+const mySym = Symbol("key1");
+const myObj = {
+  operatingSystem: "Windows",
+  mySym: "key1", // this is the wrong approach
+};
+console.log(myObj.mySym, typeof myObj.mySym); // Output: myKye1 string
+// this way would be able to see value on console, but data type will not be Symbol anymore
+// so correct way is
+const myObj2 = {
+  operatingSystem: "Windows",
+  [mySym]: "myKey1",
+};
+// Acessing a symbol type is through bracket notation
+console.log(myObj2); // Output: key1 symbol
 
-// declaring singleton objects
-const newUser = new Object(); // declaring empty object
-newUser.id = 1;
-newUser.name = "John";
-newUser.age = 20;
-console.log(newUser);
+// changing value of object properties
+user.name = "Software Developer";
+console.log(user);
 
-// nested objects and acessing key-values from them
-const regularObject = {
-  id: "01",
-  fullName: {
-    firstName: "Billy",
-    lastName: "Butcher",
-  },
-  dob: {
-    day: "Tuesday",
-    date: {
-      date: 24,
-      month: {
-        numberOfMonth: 11,
-        nameOfMonth: "November",
-      },
+// freezing an object so no changes can be made to object further
+Object.freeze(user);
+user["full Name"] = "Backend Developer"; // no changes will be made
+console.log(user);
+
+// We can add function to the object
+const user2 = {
+  name: "Developer",
+  "full Name": "Full Stack Developer",
+  isLoggedIn: false,
+  loginHistory: ["Monday", "Friday"],
+};
+user2.greeting = function () {
+  console.log("Hello User");
+};
+console.log(user2);
+console.log(user2.greeting()); // It will print the result of greeting() and an undefined
+
+// Nested objects
+const appUser = {
+  name: {
+    fullName: {
+      firstName: "Full Stack",
+      lastName: "Developer",
     },
   },
-  greetings: function () {
-    console.log(
-      `Hello ${this.fullName.firstName} ${this.fullName.lastName}! Your birthday is ${this.dob.date.date} ${this.dob.date.month.nameOfMonth}`
-    );
-  },
+  isLoggedIn: false,
+  email: "developer@app.com",
 };
-regularObject.greetings();
+// We can access the nested properties with dot notation
+console.log(`First name of App user: ${appUser.name.fullName.firstName}`);
+// optional chaining
+// when working with APIs, we encounter many instances where we have to access nested
+// properties. In that case, we use optional chaining, which is a short-hand syntax for
+// if else
+console.log(`Last name of App use: ${appUser.name?.fullName.lastName}`);
+// appUser.name?.fullName.lastName, here we are checking if fullName property exists
 
-//combining or merging two objects
-const obj1 = { 1: "A", 2: "B", 3: "C" };
-const obj2 = { 4: "a", 5: "b", 6: "c" };
+// merging objects
+const obj1 = {
+  1: "A",
+  2: "B",
+  3: "C",
+};
+const obj2 = {
+  4: "D",
+  5: "E",
+  6: "F",
+};
+// const obj3 = { obj1, obj2 }; //This approach is not valid,
+// as it will create obj3 with nested obj1 and obj2
+// const obj3 = obj1 + obj2; // This method is also not valid as it will return
+// [object Object][object Object]
+// Because using the '+' operator on objects, JS will try to convert objects to primitive
+// values like strings. JS will call 'toString()' method to convert both operands into
+// string. And toString(obj1 OR obj2) result in [object Object] which is generic object.
+// So the solution is to use Object.assign() method
+const obj3 = Object.assign({}, obj1, obj2);
+// in Object.assign() method, the first argument is target object and rest are source objects.
+// In this target, all other source objects will merge.
+// So it's good to put an empty object as target.
+// Otherwise you can also do like this:
+const obj4 = Object.assign(obj1, obj2); // In this case, source objects will merge into obj1
+console.log(obj3, "\n", obj4);
+// Output will be same merged objects
 
-const objTest = { obj1, obj2 }; // this will not pull out each key-value of obj1 and obj2 in obj3
-console.log(objTest);
-const obj3 = Object.assign({}, obj1, obj2); // assign() method will pull all values of obj1 and obj2 and assign them to obj3
-console.log(obj3);
-// but there is a better way of merging objects using spread operator
-const goodObject = { ...obj1, ...obj2 };
-console.log(goodObject);
+// More modren and ES standards way to merge two objects is to use spread operator
+const obj5 = { ...obj1, ...obj2 };
+console.log(obj5);
 
-//objects in arrays
-const products = [
-  { id: 1, product: "Oil" },
-  { id: 2, product: "Sugar" },
-  { id: 3, product: "Rice" },
+// When working with APIs that fetch data from databases, the data is often
+// stored as array of objects. For example
+const myAppUsers = [
+  {
+    id: 1,
+    name: "David",
+    email: "david@app.com",
+  },
+  {
+    id: 2,
+    name: "John",
+    email: "john@app.com",
+  },
+  {
+    id: 3,
+    name: "Peter",
+    email: "peter@app.com",
+  },
 ];
-// to access key-values of objects from an array there is following syntax
-console.log(products[1].product); // accessing 2nd object's product from array products
+// SO in such cases, for example to access a user
+// First you would access that user's object in array with standard array bracket notation
+// and then access the property of that object using dot or bracket notation
+console.log(myAppUsers[1]["name"]);
+console.log(myAppUsers[0].email);
 
-// object methods
-console.log(Object.keys(obj3)); // keys() method returns array of keys of specified object
-console.log(Object.values(obj3)); // values menthod returns array of values of specified object
-console.log(Object.entries(obj3)); // enteries method returns an array with consists of arrays of each key value pair
-console.log(obj3.hasOwnProperty("4")); // checks wether specified key is present in object
+// Object functions / methods / properties
+const dish = {
+  id: "123",
+  name: "Pizza",
+  price: 100,
+  ingredients: ["cheese", "tomato", "sauce"],
+};
+// Extracting all keys of an object
+const keysOfDishObject = Object.keys(dish); // returns array of keys
+console.log(`Keys of dish object:`, keysOfDishObject);
+// Extracting all values of an object
+const valuesOfDishObject = Object.values(dish); // returns array of values
+console.log(`Values of dish object:`, valuesOfDishObject);
+// Extracting all key-value pairs of an object
+const entriesOfDishObject = Object.entries(dish); // returns array of key-value pairs
+console.log(`Entries of dish object:`, entriesOfDishObject); // each key-value will have it's own array
+// Checking if a property exists in an object
+console.log(`Is "name" property in dish object?`, dish.hasOwnProperty("name")); // true
+//A newer and safer method to check if a property exists in an object
+console.log(
+  `Is "nutri-score" property in dish object?`,
+  Object.hasOwn(dish, "nutri-score")
+);
+
+// Object Destructuring in JS and JSON API
+const course = {
+  name: "JS Foundations",
+  timeDuration: "5 Hours",
+  skillLevel: "Beginner",
+};
+// Now often you would want to use any property of course object like
+console.log(`Level:`, course.skillLevel); // this method is completely fine
+// but if you want to use this property at many place, then writing course.skillLevel
+// can be time consuming. So there is an alternate short syntax
+const { skillLevel } = course; // this is destructuring
+console.log(`Level:`, skillLevel);
+// Also we can change the name of the property for our use like
+const { timeDuration: duration } = course;
+console.log(`Duration:`, duration);
+
+// +++++++++++++ JSON APIs +++++++++++++
+// JSON = JavaScript Object Notation, is a lightweight, text-based data-interchange format.
+// Most modern back-end services serialize their responses in JSON so front-end apps
+// can easily parse and use the data.
+// API = Application Programming Interface — a formal set of rules and tools.
+// It lets different software components or services communicate with one another.
+
+// If you goto https://api.github.com/users/user-name, you will find the github details
+// of that user in JSON format. Like {"login": "Ribal-Raza", "id": 1111,....}
+
+// Sometimes you get API response in JSON but it contains an array which contains objects
+// Like if you goto https://randomuser.me/api/, you will get data in
+// {[....],info:{...}}, so important information is in that array.
