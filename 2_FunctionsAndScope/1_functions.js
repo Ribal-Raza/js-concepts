@@ -1,60 +1,95 @@
-/* Functions are basically reusable blocks of code. Instead of writing same code logic again and
-again, we can place the code logic in a function and simply call that function 
- For example I need to print my name 3 times, I can write 3 console logs
-console.log("Ribal");
-console.log("Ribal");
-console.log("Ribal");
-What if I had to print my name 10 or 20 times, it would be time taking, so we can make function
-function myName() {
-  console.log("Ribal");
-}; function declaration
-Now I can call function as many times as I want and it will print the name
-myName();
-myName();
-myName(); 
-Here one thing we need to remember is writing myName only will be considered as a reference to the
-function but writing myName() means the function will execute*/
+/**
+ * @fileoverview Functions in JS
+ */
+// A function in JavaScript is a reusable block of code designed to perform a particular task.
+// A simple function is defined as following:
+function printString() {
+  console.log("Hello World");
+}
+// then the function is called/invoked.
+printString();
 
-// We can pass parameters in the function to get dynamic results instead of hard-coded/static result
+// In real projects and problems, the functions accepts some values, perform certain actions
+// on those values and return some results.
+// So defining a function that accepts values:
 function addTwoNumbers(num1, num2) {
   console.log(num1 + num2);
 }
-// on function call, we have to pass 2 parameters in the function so result can be returned
-addTwoNumbers(4, 7);
-// but can we save result of addTwoNumbers in a variable, lets see
-const addition = addTwoNumbers(2, 3); // at this line addTwoNumbers() will excute and print result
-console.log(addition); // but the result of addTwoNumbers() will not be saved in addition
-// use of return statement is the solution of above problem
-function valueOfAddition(num1, num2) {
-  return num1 + num2;
-}
-const result = valueOfAddition(4, 5);
-console.log("Result ", result);
+// In the function definition, within the parentheses, 'parameters' are passed
+// the name of those parameters can be anything. Then those parameters become
+// available inside the function to work with
 
-// expressions, assigning a function to a varibale is often called an expression.
-const greet = function () {
-  console.log("Hello Ladies and gentlemen");
-};
-greet();
+// When invoking/calling the function, arguments are passed in parentheses
+// these have to be values with same data type as function is expecting.
+// otherwise, the results will not be correct
+addTwoNumbers(3, 4); // Output: 7
+addTwoNumbers(3, "4"); // Output: 34, because string is passed instead of number
 
-// giving default value to parameter in case the values of parameters are undefined
-function greeting(name = "UnKnown") {
-  return console.log(`Hello ${name}!`);
-}
-greeting("Raza");
-greeting();
+// Parameters are placeholder variables names the function expects, when defining the function
+// Arguments are actual values you pass into the function, when calling/invoking the function
 
-// Adding as many parameters as needed. In some cases, we are not sure how many parameters the function will recieve, so we can use Rest operator
-function addItemsToCart(...params) {
-  return params; // it will return values of all paramters in an array
+// Saving the result of a function to a variable
+const result = addTwoNumbers(4, 5);
+console.log("Result: ", result); // Output: Result:  undefined
+// why undefined? Because if we go back to function definition of addTwoNumbers,
+// we would see that this function is printing the result of addition
+// but it's not returning any value
+// action is happening, result is none
+// Here comes the concept of returning the results of actions in functions
+function multiplyTwoNumbers(num1, num2) {
+  return num1 * num2;
 }
-console.log(addItemsToCart("bag", "chocolate", "jacket"));
+// so now it's returning something which can be saved to a variable
+const resultMultiplication = multiplyTwoNumbers(2, 6);
+console.log("Result Multiplication: ", resultMultiplication); // Output: 12
 
-// question
-function showNumbers(num1, num2, ...nums) {
-  return nums;
+// Functions can also return multiple values
+function addAndMultiply(num1, num2) {
+  const sum = num1 + num2;
+  const product = num1 * num2;
+  return [sum, product];
 }
-console.log(showNumbers(200, 300, 400, 500, 600)); // output: [400, 500, 600], why is that?
-/* in function showNumbers, first two passed numbers will be assign to num1 and num2, while rest of
-them will be assigned to ...nums, and as showNumbers() returns nums only, show output will be rest 
-of the values*/
+const [resultSum, resultProduct] = addAndMultiply(3, 4); // array destructuring assignment
+console.log("Result Sum: ", resultSum); // Output: 7
+console.log("Result Product: ", resultProduct); // Output: 12
+
+// Checking if arguments values are received or not
+// sometimes, when a function is expecting an argument, but none is passed
+// that paramenter becomes undefined and malfunctioning occurs
+function logUser(username) {
+  return `Welcome ${username}`;
+}
+console.log(logUser()); // Output: Welcome undefined
+
+// To avoid such scenerios, some checks are applied, using conditional logic
+function logUser2(username) {
+  if (username == undefined) {
+    return `Please provide a username`;
+  } else {
+    return `Welcome ${username}`;
+  }
+}
+
+console.log(logUser2()); // Output: Please provide a username
+console.log(logUser2("David")); // Output: Welcome David
+
+// an alternate syntax of checking undefined would be
+function logUser3(username) {
+  if (!username) {
+    return `Please provide a username`;
+  } else {
+    return `Welcome ${username}`;
+  }
+}
+// undefined is a falsy value, which means it coerces to false in a boolean context
+// Here ! operator inverses the undefined value of username to true, setting the condition to true
+// so the else block is executed
+console.log(logUser3()); // Output: Please provide a username
+
+// But if you want to get rid of the checks altogether
+// you can define default value of the parameter
+function logUser4(username = "Guest") {
+  return `Welcome ${username}`;
+}
+console.log(logUser4()); // Output: Welcome Guest
+console.log(logUser4("David")); // Output: Welcome David
