@@ -1,31 +1,50 @@
-// passing Objects as parameters in Functions
-const myObject = {
-  myName: "Ribal Raza",
-  myAge: 24,
+/**
+ * @fileoverview Functions With Objects and Arrays
+ */
+
+// In some cases when you don't know how many paramters will a would get
+// in those cases, you use can use rest operator in function parameter
+// rest operator packs all the arguments
+function calculatePrice(...items) {
+  return items;
+}
+console.log(calculatePrice(100, 200, 300, 400, 500)); // Output: [ 100, 200, 300, 400, 500 ]
+
+// sometimes you want a few parameters specifically, and rest of the parameters as a whole
+// for example, you want name of a shop, and location of shop, and then
+// list of all the dishes it has
+function showShop(shopName, shopLocation, ...dishes) {
+  return `${shopName} is located at ${shopLocation} and has ${dishes}`;
+}
+console.log(
+  showShop(
+    "Burgers",
+    "Town",
+    "Hamburger",
+    "Grilled Burger",
+    "Zinger Burger",
+    "Beef Burger"
+  )
+);
+
+// Function with array
+const newArray = [300, 200, 4000, 1550];
+function getThirdValue(arr) {
+  return arr[2];
+}
+console.log(getThirdValue(newArray)); // Output: 4000
+
+// Function with objects
+const burger = {
+  name: "Grilled Chicken Burger",
+  price: 200,
+  category: "Fast Food",
 };
-function greetings(anyObject) {
-  return console.log(
-    `Hello ${anyObject.myName}! You are ${anyObject.myAge} years old.`
-  );
-}
-/*we can give any name to the object in parameter but we have to make sure that the key value 
-should be correct according to the object our function will recieve as parameter*/
-greetings(myObject);
-// we can also directly pass the object in parameter instead of storing it in varibale
-greetings({ myName: "Ali Raza", myAge: 25 });
 
-// We can use destructuring to pass keys directly
-function greetings2({ myName, myAge }) {
-  return console.log(`Hello ${myName}! You are ${myAge} years old.`);
+function dishDetails(dishObj) {
+  return `${dishObj.name} is a ${dishObj.category} dish. It's price is ${dishObj.price}.`;
 }
-greetings(myObject); // the function will destructure myObject and take myName, myAge from it
-
-// passing arrays as parameters in Functions
-const numbersArray = [0, 1, 2, 3, 4];
-function showthirdNumber(anyArray) {
-  return anyArray[2];
-}
-console.log(showthirdNumber(numbersArray));
-
-// similarly we can directly pass array in parameter
-console.log(showthirdNumber([10, 20, 20, 40, 50]));
+console.log(dishDetails(burger)); // Output: Grilled Chicken Burger is a Fast Food dish
+console.log(
+  dishDetails({ name: "Margherita Pizza", price: 300, category: "Fast Food" })
+);
