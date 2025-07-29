@@ -1,68 +1,79 @@
-/* Scope in JavaScript refers to the accessibility or visibility of variables and functions within a 
-specific portion of code. It determines where a variable or function is declared and from where it 
-can be accessed. 
-There are two main types of scope in JavaScript:
-Global Scope: Variables declared outside of any function have global scope, meaning they
-are accessible from anywhere within the program.
-Local scope is a more general term that can refer to both function scope and block scope. It simply 
-means that a variable or function is only accessible from within a specific portion of code. */
+/**
+ * @fileoverview Global and Local Scope
+ */
+/**
+ * Scope in JavaScript defines the visibility and accessibility of variables and functions
+ * within different parts of the code. It depends on where a variable is declared.
+ */
 
-// Global Scope
-// The varibales defined outside any block or functions can be accessed anywhere in code
-let aGloble = 10;
-const bGloble = 20;
-var cGloble = 30;
-console.log(aGloble);
-console.log(bGloble);
-console.log(cGloble);
+/**
+ * Global Scope:
+ * Variables declared outside any function or block are in the global scope.
+ * They are accessible from anywhere in your script (unless shadowed).
+ */
+const aGlobal = 10;
+let bGlobal = 20;
+var cGlobal = 30; // Not recommended
 
-//Local Scope
-// Variables defined in a function or block of code can only be accessed within that func or block
-function scope() {
+console.log(
+  `Global Constants:\naGlobal: ${aGlobal}\nbGlobal: ${bGlobal}\ncGlobal (var): ${cGlobal}`
+);
+
+/**
+ * Local Scope:
+ * Variables declared inside a function or block are only accessible within that scope.
+ * This includes both function scope and block scope (e.g., inside if/for blocks).
+ */
+function localScope() {
   let aLocal = 10;
   const bLocal = 20;
   return aLocal + bLocal;
 }
-// now I can't access aLocal or bLocal outside function scope()
-// console.log(aLocal); It will give error saying "aLocal is not defined"
-//similarly for block scope
+// console.log(aLocal); // ReferenceError: aLocal is not defined
+
 if (true) {
   let aBlock = 10;
   const bBlock = 20;
   const result = aBlock + bBlock;
-  console.log(result);
+  console.log(`Block result: ${result}`);
 }
-// console.log(bBlock); It will give error saying "bBlock is not defined"
+// console.log(bBlock); // ReferenceError: bBlock is not defined
 
-// problem with 'var'
-if (aGloble == 10) {
-  let ABlock = 100;
-  const BBlock = 200;
-  var CBlock = 300;
+/**
+ * 'var' Pitfall:
+ * 'var' is function-scoped, not block-scoped.
+ * So a variable declared with var inside a block is accessible outside that block.
+ */
+if (true) {
+  let letVar = 100;
+  const constVar = 200;
+  var varVar = 300; // Hoisted to function/global scope
 }
-/* we know that a locally defined variable can't be accesed outside that local scope, so we can't
-access ABlock and BBlock outside, but CBlock can be accessed outside, beacuse we used 'var' to
-define it, and 'var' automatically makes variable CBlock global*/
-// console.log(CBlock); It will print value of CBlock, means CBlock can be accessed outside
-/* this leads to many problems, for example if a variable 'Price = 100' is defined with 'var' keyword
-in a module, a developer imports that code in his/her project, and by chance he/she defines variable 
-Price in his project again, it's value will be overwritten by imported module because it already has
-Price as 'var' in it. So it is strictly recommended to not declare a variable with 'var'.*/
+// console.log(letVar);   // ReferenceError
+// console.log(constVar); // ReferenceError
+console.log(varVar); // Output: 300
+// Using var can lead to confusing bugs and is generally discouraged in modern JavaScript.
 
-// varible defined in global scope is accessable in local scopes, for example
-let Price = 350;
-function priceString() {
-  return console.log(`This item's price is ${Price}`);
+/**
+ * Global Variables Inside Local Scopes:
+ * A globally declared variable can be accessed inside functions.
+ */
+let price = 350;
+function printPrice() {
+  console.log(`This item's price is ${price}`);
 }
-priceString(); // Output: This item's price is 350
+printPrice(); // Output: This item's price is 350
 
-/* If we define a variable with same name in global and local scope, the global varibale's value will
-remain same globally but locally the variable's value will be according to locally defined variable*/
-const myName = "Raza";
+/**
+ * Variable Shadowing:
+ * If a local variable has the same name as a global one,
+ * the local one is used within that scope, and global remains unchanged.
+ */
+const myName = "John";
+
 function printName() {
-  const myName = "hamid";
-  return console.log(myName);
+  const myName = "David"; // Shadows global myName
+  console.log(`Local name: ${myName}`); // David
 }
-
-printName(); // will print myName according to local name value
-console.log(myName); // will print myName according to global myName value
+printName();
+console.log(`Global name: ${myName}`); // John
