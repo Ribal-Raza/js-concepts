@@ -84,17 +84,17 @@ const hasCard = true;
  * Example: "I'll go to the picnic IF it's sunny AND I'm free."
  */
 if (isLoggedIn && hasCard) {
-  console.log("✅ Please proceed to order details.");
+  console.log("Please proceed to order details.");
 } else if (!isLoggedIn && hasCard) {
   // ! (NOT) — Reverses a boolean value
   // !isLoggedIn means: "User is NOT logged in"
-  console.log("🔒 Please log in to purchase.");
+  console.log("Please log in to purchase.");
 } else if (isLoggedIn && !hasCard) {
   // !hasCard — User is logged in but doesn't have a card
-  console.log("💳 Please add a payment card.");
+  console.log("Please add a payment card.");
 } else {
   //Fallback — Neither condition is met
-  console.log("🚫 No purchase allowed.");
+  console.log("No purchase allowed.");
 }
 
 /**
@@ -106,7 +106,21 @@ const isLoggedInFromEmail = true;
 const isLoggedInFromGoogle = false;
 
 if (isLoggedInFromEmail || isLoggedInFromGoogle) {
-  console.log("✅ Logged in successfully.");
+  console.log("Logged in successfully.");
 } else {
-  console.log("🔐 Please log in.");
+  console.log("Please log in.");
 }
+
+/** Ternary Operator
+ * The conditional (ternary) operator is the only JavaScript operator that takes three operands.
+ * a condition followed by a question mark (?),
+ * then an expression to execute if the condition is truthy followed by a colon (:),
+ * and finally the expression to execute if the condition is falsy.
+ * This operator is frequently used as an alternative to an if...else statement.
+ * (condition) ? valueIfTrue : valueIfFalse
+ * The ternary operator is like a mini if/else — compact but powerful.
+ */
+const bankAccountType = "Current";
+const discountValidity =
+  bankAccountType === "Current" ? "Valid for discount" : "Invalid for discount";
+console.log(discountValidity);
