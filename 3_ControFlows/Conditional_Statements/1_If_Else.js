@@ -1,97 +1,106 @@
-/* Conditional statements allows to execute different blocks of code based on certain conditions. They 
-are essential for making decisions and controlling the flow of  program. 
-*/
+/**
+ * @fileoverview If-else conditional statements
+ */
+/**
+ * Programs and Applications don’t behave the same way for every user or situation.
+ * They run different code based on conditions like login state or user actions.
+ * Conditional statements like if/else enable this selective behavior.
+ */
+// "if" statement. It only executes the code block if the condition(s) are true.
+// It's syntax goes like: if(condition){....code....}
+let isUserActive = true;
+if (isUserActive) {
+  console.log("Good Day! Keep Coding.");
+} // Output: Good Day! Keep Coding.
+// It checked the value of "isUserActive", which is true, so it will execute the code block.
 
-// The if statement is used to execute a block of code if a specified condition is true.
-let isActive = true;
-// if (isActive == true) {console.log("User is active");}
-//  but there is no need to write isActive == true, simply write isActive
-if (isActive) {
-  console.log("User is active");
+// But more often you will see comparisons going on to check the conditions.
+// Here comparison operators are used
+// <, >, <=, >=, !, ==, ===, !==
+const temperatureToday = 35;
+if (temperatureToday > 30) {
+  console.log("It's Hot today!");
 }
+// temprature is 35, which is greater than 30, so the condition evaluated to true
+// and the code block will be executed
 
-/* The if else statement extends the if statement by providing an alternative block of code to execute if 
-the condition is false. */
-isActive = false;
-if (isActive) {
-  console.log("User is active");
+// if-else
+// using 'else' is like giving option. Either the code in if will execute or the code in else will execute.
+// It's syntax goes like: if(condition){....code....} else{....code....}
+const age = 1000;
+if (age >= 5000) {
+  console.log("It is an acient thing");
 } else {
-  console.log("User is not Active");
+  console.log("It is very old thing");
 }
+// as the value of age is 1000, which is not equal to or greater than 5000, so
+// comparison resulted in false, if-block didn't execute, else block executed
 
-/* The else if statement allows for more complex conditional branching by providing multiple conditions and 
-associated code blocks. It chains multiple if statements together. */
-const score = 100;
-if (score == 50) {
-  console.log("Your grade is C");
-} else if (score == 100) {
-  console.log("You are topper");
+// if-else both have block scope, which means the variables defined in them cannot leak
+// in global scope.
+// but in case of var, things go differently
+const score = 200;
+if (score < 250) {
+  var addedValue1 = score + 50;
+  let addedValue2 = score + 50;
+  console.log(addedValue1);
+  console.log(addedValue2);
+}
+// console.log(addedValue1); // Output: 250
+// console.log(addedValue2); // Output: Reference error: addedValue2 is not defined
+// So because var leaks into global scope, it should not be used
+
+// Alternate syntax to write if
+// If there is only one line in the if block, you can skip curly braces and just write it
+// all in one line. This is called implicit scope. For example
+const balance = 1020;
+if (balance === 1020) console.log("OK"); // Output: OK
+
+// you can write more than one line with implicit scope
+// if (balance === 1020) console.log("OK"), console.log("Balance more than 100");
+// But it is very bad practice to do so. Because the code becomes less readable.
+// This method works but it should be avoided.
+
+// Multi-branch conditional statement OR if...else if...else chain
+if (balance < 500) {
+  console.log("Balance is less than 500");
+} else if (balance < 750) {
+  console.log("Balance is less than 750");
+} else if (balance < 1000) {
+  console.log("Balance is less than 1000");
 } else {
-  console.log("You are fail");
+  console.log("Balance is greater than 1000");
 }
-/* JavaScript provides logical operators to combine multiple conditions:
-1- && : The AND operator checks if both conditions are true. 
-2- ||: The OR operator checks if either or both conditions are true.
-3- !: The NOT operator negates a condition, reversing its truth value.*/
-const score2 = 75;
-const isStudent = true;
-if (isStudent && score2 >= 60) {
-  console.log("You have passed");
+
+// Checking multiple conditions in one if statement
+const isLoggedIn = true;
+const hasCard = true;
+
+if (isLoggedIn && hasCard) {
+  // executes if both conditions are true
+  console.log("Please proceed to order details");
+} else if (!isLoggedIn && hasCard) {
+  // executes if first condition is false and second is true
+  console.log("Please log in to purchase");
+} else if (isLoggedIn && !hasCard) {
+  // executes if first condition is true and second is false
+  console.log("Please Add a card");
 } else {
-  console.log("You have failed");
+  // executes if both conditions are false
+  console.log("No purchase allowed");
 }
-
-// Nested If else
-const hasDebitCard = true;
-const item1 = "Bag";
-const item2 = "Jacket";
-if (hasDebitCard) {
-  if (item1 == "Bag" && item2 == "Jacket") {
-    // If both conditions are true
-    console.log("You have got a discount of 45%");
-  } else if (item1 == "Bag" || item2 == "Jacket") {
-    // If any of the condition is true
-    console.log("You have got a discount of 20%");
-  }
-  console.log("You are purchasing via credit card");
+// You might have spotted '&&' anb '!'. In addition to them, there is another one '||'.
+// These are logical operators or Boolean operators.
+// && - Logical AND - Returns true only if both statements are true
+// ! - Logical Not - Inverts the value of the expression
+// || - Logical OR - Returns true if one of the statements is true
+// Let's see example related to OR:
+const isLoggedInFromEmail = true;
+const isLoggedInFromGoogle = false;
+if (isLoggedInFromEmail || isLoggedInFromEmail) {
+  // executes if any condition is true
+  console.log("Logged In correctly");
 } else {
-  console.log("You are not purchasing through Credit card");
+  // executes if both are false
+  console.log("Please log in");
 }
-
-// Multiple or mixed AND, OR and NOT
-const isEmailLogged = true;
-const isGoogleLogged = true;
-const isAuthentic = true;
-
-if ((isEmailLogged || isGoogleLogged) && isAuthentic) {
-  /* (isEmailLogged || isGoogleLogged), encapsulating in () sets presedence of operation, then it checks
-  the result with '&& isAuthentic'*/
-  console.log("You are logged In and you have authenticated");
-} else if ((isEmailLogged || isGoogleLogged) && !isAuthentic) {
-  console.log("You are logged In! But you have to authenticate");
-}
-
-/*Nullish Coalescing Operator (??) : null undefined
-In some case, like establishing connection with database, there are usually more than 1 responses. In those
-case, we have to check wether there is a null/undefined response or there is some other response. Based on
-the response, further logic is developed. So there comes ?? operator*/
-let value = 5 ?? 10; // in case no values is undefined or null, value on left side of ?? will be assigned
-console.log(value); // Output: 5
-value = null ?? 5;
-console.log(value); // Output: 5. it will skip the null, and assign 5 to value
-value = undefined ?? 10;
-console.log(value); // similarly it will skip undefined and assign 10 to value
-
-/* In case of three coalescense values, if first value value is null, then the value immediatly on it's 
-other side will be assigned */
-value = null ?? 9 ?? 15; // 9 is immediatly after null, so it will be assigned to value
-console.log(value);
-
-/* Terniary Operator
-It is shorter syntax of 'if else'. You write your condition followed by a ? then there comes the code to
-execute if that codition is true followed by : then there comes code in case condition is not satisfied.
-
-condition ? true (code to execute if condition is met) : false (code to execute if codition is not satisfied) */
-
-const number = 10;
-number === 10 ? console.log("Number is 10") : console.log("Number is not 10");
