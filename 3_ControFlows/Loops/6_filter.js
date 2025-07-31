@@ -2,9 +2,10 @@
  * @fileoverview filter method
  */
 /** `filter()` Method in JavaScript
+ * filter() is a higher order array method as it takes a callback as argument.
  * - A built-in array method used to **create a new array** with only those elements that pass a given test.
- * - Executes a **callback function** once for each element in the array.
- * - Returns a **new array** containing only the elements for which the callback returns `true`.
+ * - Executes a callback function once for each element in the array.
+ * - Returns a new array containing only the elements for which the callback returns `true`.
  * Why it's used:
  * - Ideal for **filtering** arrays based on specific conditions.
  * - More readable and concise than traditional loops for this purpose.

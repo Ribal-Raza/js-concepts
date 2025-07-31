@@ -1,10 +1,18 @@
 /**
  * @fileoverview for...each loop
  */
+/** Higher Order Function
+ * A higher-order function in JavaScript is a function that either:
+ * - Takes one or more functions as arguments
+ * - Returns a function as its result
+ */
 /** `forEach()` Loop in JavaScript
+ * for...each loop is a higher order function because it takes a callback as an argument.
  * - A built-in method available on Arrays and some array-like objects.
- * - Executes a **callback function** once for each element in the array.
- * - It does **not** return a value and cannot be stopped or broken (unlike `for`/`for...of`).
+ * - Because it's a built-in array method, and is a higher order function, it is called
+ * higher order array method
+ * - Executes a callback function once for each element in the array.
+ * - It does not return a value and cannot be stopped or broken (unlike `for`/`for...of`).
  * Why it's used:
  * - Clean and readable for applying operations on each item.
  * - Often preferred in functional-style coding.
