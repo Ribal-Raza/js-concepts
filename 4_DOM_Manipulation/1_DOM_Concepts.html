@@ -83,35 +83,6 @@
        */
       console.dir(document); // Output in directory format like objects
       // getting links in a DOM
-      console.log(document.links); // Output: HTMLCollection(2) [a.link1, a.link2]
-      /** DOM Collection Types in JavaScript
-       * HTMLCollection – A live, array-like list of HTML element nodes.
-       * - Comes from: getElementsByTagName(), getElementsByClassName(), document.forms, document.links, etc.
-       *
-       * NodeList – A collection of DOM nodes (can include elements, text, comments).
-       * - Comes from: querySelectorAll(), childNodes, etc.
-       *
-       * NamedNodeMap – A live collection of attribute nodes (name-value pairs) on an element.
-       * - Comes from: element.attributes
-       *
-       * Why they're NOT real arrays:
-       * - They lack full Array methods (like map, filter, reduce).
-       * - They're array-like (have .length and index access), but not instances of Array.
-       * - You must use Array.from() or spread syntax ([...collection]) to convert them into real arrays.
-       */
-      //
-      // Accessing Elements by class
-      const heading = document.getElementsByClassName("heading");
-      console.log(heading); // Output: HTMLCollection [h1.heading]
-      // Accessing Elements by Id
-      const paragraph = document.getElementById("para");
-      console.log(paragraph); // Output: p#para
-      // here p#para is not a collection, it is a DOM element node
-      // It is specifically an HTMLElement
-
-      // Accessing inner HTML and changing it
-      const link1 = document.getElementsByClassName("link1"); // Return an HTMLCollection
-      link1[0].innerHTML = "<a>Visit site</a>"; // link[0], 1st element in HTMLCollection
     </script>
   </body>
 </html>
