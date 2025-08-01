@@ -1,86 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!--What is the DOM?
+    The DOM (Document Object Model) is a programming interface (API) provided by the browser.
+    It represents the HTML page as a live, tree-like structure in memory.
+    Why it's called an API:
+    Because JavaScript can use built-in functions (like querySelector, createElement, etc.)
+    to interact with the page—read or change elements, text, attributes, styles, and more.
+    It's the "bridge" between HTML/CSS (static) and JavaScript (dynamic).-->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DOM Manipulation Learning</title>
+    <title>DOM Manipulation</title>
   </head>
   <body>
-    <div id="wrapper" class="parent">
-      <div class="day">Monday</div>
-      <div class="day">Tuesday</div>
-      <div class="day">Wednesday</div>
-      <div class="day">Thursday</div>
-      <div class="day">Friday</div>
-      <div class="day">Saturday</div>
-      <div class="day">Sunday</div>
+    <!-- A simple template for practice-->
+    <div class="bg-blue">
+      <h1 class="heading">Learning DOM Manipulation with JS</h1>
+      <p id="para">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, iusto.
+        Excepturi porro quis nesciunt distinctio veniam veritatis quod aliquid
+        accusantium dolor quia ducimus molestias iste similique repellat unde,
+        officiis aliquam. <a href="#" class="link1">Adipisci</a> sint quae a
+        suscipit nam cum reprehenderit atque voluptatum ad. Iusto ipsa sed sunt
+        obcaecati totam pariatur ducimus aperiam quia atque quo. Eligendi,
+        <a href="#" class="link2">praesentium</a> natus! Cum iure eligendi ex!
+      </p>
     </div>
+    <script>
+      /** How Browser Builds the DOM (Step-by-Step)
+       * 1. Browser loads the HTML and starts parsing top to bottom.
+       * 2. It creates a 'document' object as the root of the DOM.
+       * 3. Then it adds the <html> element as the top-level node.
+       * 4. Inside <html>, it adds <head> and <body> nodes.
+       * 5. All tags (<meta>, <title>, <div>, <h1>, <p>...) become "element nodes".
+       * 6. All text inside tags becomes "text nodes".
+       * 7. Attributes like class="heading" are added as properties of those nodes.
+       * → This entire structure becomes the live DOM tree JavaScript can access.
+       */
+      /**
+       * DOM Representation (Visual Tree)
+       Window
+       └─ Document
+         └── html
+             ├── head
+             │   ├── meta
+             │   ├── meta
+             │   └── title ("DOM Manipulation")
+             └── body
+                 └── div.bg-blue
+                     ├── h1.heading ("Learning DOM Manipulation with JS")
+                     └── p ("Lorem ipsum... ex!")
+                         ├── a.link1
+                         └── a.link2
+       * DOM representation in Javascript(Browser Memory):
+       * - window // Global browser window/page/tab object
+       * - document // Root DOM object
+       * - document.documentElement // <html>
+       * - document.head            // <head>
+       * - document.body            // <body>
+       * - document.body.firstElementChild // <div class="bg-blue">
+      */
+      // let's start exploring DOM
+      /** `window` Object
+       * `window` is the global object in the browser. It represents the browser window/tab.
+       * It give you access to:
+       * - The DOM (document).
+       * - Browser APIs (alerts, timers, localStorage, etc.).
+       * - Global functions (setTimeout, fetch, etc.).
+       * - Your global variables/functions.
+       */
+      console.log(window); // Output: Window{...}
+      // Accessing DOM (document)
+      console.log(window.document); // Output: #document
+      console.log(document); // Output: #document
+      /** document is not just an object, is it’s a DOM node.
+       * it’s the root node of the DOM tree (called the document node).
+       * The # is a visual cue used by DevTools to show it's a DOM element or node type.
+       * Other nodes show up similarly:
+       * - `#text` for text nodes
+       * - `#comment` for comments
+       * - `html, head, body,` etc. for element nodes
+       */
+      console.dir(document); // Output in directory format like objects
+      // getting links in a DOM
+      console.log(document.links); // Output: HTMLCollection(2) [a.link1, a.link2]
+      /** DOM Collection Types in JavaScript
+       * HTMLCollection – A live, array-like list of HTML element nodes.
+       * - Comes from: getElementsByTagName(), getElementsByClassName(), document.forms, document.links, etc.
+       *
+       * NodeList – A collection of DOM nodes (can include elements, text, comments).
+       * - Comes from: querySelectorAll(), childNodes, etc.
+       *
+       * NamedNodeMap – A live collection of attribute nodes (name-value pairs) on an element.
+       * - Comes from: element.attributes
+       *
+       * Why they're NOT real arrays:
+       * - They lack full Array methods (like map, filter, reduce).
+       * - They're array-like (have .length and index access), but not instances of Array.
+       * - You must use Array.from() or spread syntax ([...collection]) to convert them into real arrays.
+       */
+      //
+      // Accessing Elements by class
+      const heading = document.getElementsByClassName("heading");
+      console.log(heading); // Output: HTMLCollection [h1.heading]
+      // Accessing Elements by Id
+      const paragraph = document.getElementById("para");
+      console.log(paragraph); // Output: p#para
+      // here p#para is not a collection, it is a DOM element node
+      // It is specifically an HTMLElement
+
+      // Accessing inner HTML and changing it
+      const link1 = document.getElementsByClassName("link1"); // Return an HTMLCollection
+      link1[0].innerHTML = "<a>Visit site</a>"; // link[0], 1st element in HTMLCollection
+    </script>
   </body>
-  <script>
-    /* Script tag is used to write JS code inside HTML document. It is a good practice to include script
-    after body tag*/
-    // Selecting/Acessing an element
-    // // 1- through getElementById()
-    // document.getElementById("wrapper");
-    // // 2- through getElementByClass()
-    // document.getElementsByClassName("parent");
-    // // 3- through getElementByTagName()
-    // document.getElementsByTagName("div");
-    // // 4- through querySelector(), it returns only first matching element
-    // document.querySelector(".parent");
-    // // 5- through querySelectorAll(), it returns all matching elements
-    // document.querySelectorAll(".day");
-
-    // Adding/Manipulating Styles
-    const wrapper = document.querySelector(".parent");
-    /* In wrapper varibale, we stored div with classname "parent". We can manipulate it's styling by
-    `.style` proprety.*/
-    wrapper.style.backgroundColor = "#212121";
-    wrapper.style.color = "#ffff";
-    wrapper.style.padding = "20px";
-
-    // Accessing child Elements
-    console.log(wrapper.children);
-    console.log(wrapper.firstElementChild);
-    console.log(wrapper.lastElementChild);
-    /*".children" property returns HTMLCollection of all child elements of targeted element.
-    We can further use `firstElementChild` and `lastElementChild` to access first or last child
-    elements of the targeted element.*/
-    /*As .children property returns HTMLCollection of all child elements, we can access them with array's
-    bracket notation syntax and we can use loop on this collection */
-    const childrenOfWrapper = wrapper.children;
-    console.log(childrenOfWrapper[1]);
-    // we can access each element in childrenOfWraper using for loop
-    for (let i = 0; i < childrenOfWrapper.length; i++) {
-      console.log(childrenOfWrapper[i]);
-    }
-    // to use higher order or functional loops on childrenOfWrapper, we have to convert it in Array
-    // similary we can manipulate or add styles in child elements
-    childrenOfWrapper[2].style.color = "orange";
-
-    /*We can also access parent element from child element*/
-    const firstDay = document.querySelector(".day"); // querySelector returns first matching class element
-    console.log(firstDay.parentElement); // returns parent element
-    // we can also access sibling elements
-    console.log(firstDay.previousSibling);
-    console.log(firstDay.nextElementSibling);
-
-    // Creating a new element
-    const div = document.createElement("div");
-    // created an element using createElement, now we can perform all DOM manilpulation methods on it
-    div.className = "second"; // sets the "class" attribute
-    div.id = "1"; // sets "id" attribute
-    // setAttribute() accepts 2 parameters, attribute name and value of that attribut
-    div.setAttribute("title", "title of div");
-
-    div.innerHTML = "<h3>Div created with code</h3>";
-    // similary we can add styles to our newly created element
-    div.style.backgroundColor = "#9acd32";
-    div.style.padding = "20px";
-    div.style.marginTop = "150px";
-    div.style.color = "black";
-    div.style.textAlign = "center";
-
-    wrapper.appendChild(div); //this adds our newly created "div" in the div with "wrapper" class
-  </script>
 </html>
