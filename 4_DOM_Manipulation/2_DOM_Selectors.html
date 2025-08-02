@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM Selectors</title>
+  </head>
+  <body>
+    <div class="main-content">
+      <h1 id="title" class="heading">DOM</h1>
+      <p class="para1" id="p1">
+        The Document Object Model (DOM) is an API for manipulating DOM trees of
+        HTML and XML documents (among other tree-like documents). This API is at
+        the root of the description of a page and serves as a base for scripting
+        on the web.
+      </p>
+      <h2 id="sh-1" class="sub-heading-1">What is a DOM tree?</h2>
+      <p class="para2" id="p2">
+        A DOM tree is a tree structure whose nodes represent an HTML or XML
+        document's contents. Each HTML or XML document has a DOM tree
+        representation<span style="display: none">"World"</span>. It has a
+        <a
+          class="tree-link"
+          id="ref1"
+          href="https://en.wikipedia.org/wiki/Tree_structure"
+          >DOM tree</a
+        >
+        that looks like this:
+      </p>
+      <img
+        src="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Using_the_Document_Object_Model/using_the_w3c_dom_level_1_core-doctree.jpg"
+        alt=""
+      />
+      <h2 id="sh-2" class="sub-heading-2">DOM and JavaScript</h2>
+      <p class="para3" id="p3">
+        The previous short example, like nearly all examples, is JavaScript.
+        That is to say, it is written in JavaScript, but uses the DOM to access
+        the document and its elements. The DOM is not a programming language,
+        but without it, the JavaScript language wouldn't have any model or
+        notion of web pages, HTML documents, SVG documents, and their component
+        parts.
+      </p>
+      <form action="get">
+        <input
+          type="email"
+          name="emailInput"
+          id="e1"
+          class="email-input"
+          placeholder="Enter your email"
+        />
+        <input
+          type="button"
+          class="email-input-btn"
+          name="emailInput"
+          value="Submit"
+        />
+      </form>
+      <ul class="es-versions">
+        <li class="v-item-1">ES6 (or ES2015)</li>
+        <li class="v-item-2">ES2016 (or ES7)</li>
+        <li class="v-item-3">ES2017 (or ES8)</li>
+        <li class="v-item-4">ES2018 (or ES9)</li>
+      </ul>
+    </div>
+  </body>
+  <script>
+    /** Selecting Elements by Id
+     * `document.getElementById(id)` is a method that returns the element object
+     * whose id property matches the specified string.
+     * If no element with that ID exists, it returns null
+     */
+    const heading1ById = document.getElementById("title");
+    // Checking data type and values of selected heading "heading1ById"
+    console.log(heading1ById); // Output: <h1 id="title" class="heading">DOM</h1>
+    console.log(`Heading 1 selected by ID: ${heading1ById}`); // Output: [object HTMLHeadingElement]
+    console.log(`Data type: ${typeof heading1ById}`); // Output: object
+    console.dir(heading1ById); // Opens the object view instead of HTML preview
+    console.log(heading1ById.constructor); // Output: ƒ HTMLHeadingElement() { [native code] }
+    console.log(
+      heading1ById instanceof HTMLElement,
+      heading1ById instanceof HTMLHeadingElement
+    ); // Output: true  true
+    // as we know that getElementById has returned a DOM element, and it's an object
+    // so we can access it's different propertise same as we access any other object
+    console.log("class name of heading 1:", heading1ById.className); // Output: heading
+    console.log("id of heading 1:", heading1ById.id); // Ouput: title
+    console.log("Inner text of heading 1:", heading1ById.innerText); // Output: DOM
+    console.log("Inner HTML of heading 1:", heading1ById.innerHTML); // Output: DOM
+    console.log("Text Content of heading 1:", heading1ById.textContent); // Output: DOM
+    /** Difference between `innerText`, `innerHTML`, and `textContent`
+     * `innerText`:
+     * - Returns only the text that the user can see (visible on screen).
+     * - Excludes tags, scripts, and hidden elements (e.g., with display: none or visibility: hidden).
+     * - Respects layout and line breaks as rendered.
+     * `innerHTML`:
+     * - Returns everything inside the tag as a string, including raw HTML tags.
+     * - Includes hidden elements, scripts, comments, and nested tags like <strong>, <span>, etc.
+     * - Does not respect visual layout — it's just raw markup.
+     * `textContent`:
+     * - Returns all text content inside the element, even if hidden (like display: none).
+     * - Ignores any HTML tags — returns plain text only.
+     * - Does not respect visual layout or line breaks.
+     */
+
+    //Let's understand by example
+    const paragraph2 = document.getElementById("p2");
+    console.log("Inner text of paragraph 2:", paragraph2.innerText); // Ouput: A DOM tree...like this, (skips tags inside)
+    console.log("Inner HTML of paragraph 2:", paragraph2.innerHTML); // Output: A DOM tree...<a href="htt...like this, (does not skips any tag)
+    console.log("Text Content of paragraph 2:", paragraph2.textContent); // Output: A DOM tree..."World"...like this, (skips tags but shows the hidden text inside span tag)
+
+    // Getting and Setting Attributes of selected element
+    // getAttribute()
+    const classNameOfPara2 = paragraph2.getAttribute("class");
+    console.log("Class name of paragraph 2 is:", classNameOfPara2); // Ouput: para2
+    // so getAttribute fuction returns the value of specified attribute
+    // setAttribute()
+    paragraph2.setAttribute("class", "test");
+    const updatedClass = paragraph2.getAttribute("class");
+    console.log("Class name of paragraph 2 is:", updatedClass); // Output: test
+    // So we can see that setAttribute has override the previous class
+    // but that's not what we intended, if we change the className, output can disturb
+    // specially if there are any styles
+    // so let's override again and this time lets set 2 attributes
+    paragraph2.setAttribute("class", "test para2");
+    const updatedClass2 = paragraph2.getAttribute("class");
+    console.log("Class name of paragraph is:", updatedClass2); // Ouput: test para2
+    // But setAttribute is not always the best way to add classes,
+
+    // A better way to add and remove classes is through class list
+    // first let's check what are the current classes on paragraph2 with classList
+    console.log(paragraph2.classList); // Output: DOMTokenList(2) ['test', 'para2', value: 'test para2']
+    // DOMTokenList is a special array-like object used to represent a list of space-separated tokens, like CSS class names in classList, or values in rel, aria, etc
+    // so we know that classList returns DOMTokenList
+    // now removing classes from paragraph 2 and setting things again
+    paragraph2.classList.remove("para2", "test");
+    console.log("Classnames of paragraph2: ", paragraph2.classList); //Output: DOMTokenList [value: '']
+    paragraph2.classList.add("para2", "test2");
+    console.log("Classnames of paragraph2: ", paragraph2.classList); //Output: DOMTokenList(2) ['para2', 'test2', value: 'para2 test2']
+
+    // Adding styles to an element
+    const anchorLink = document.getElementById("ref1");
+    anchorLink.style.color = "burlywood";
+    anchorLink.style.fontSize = "18px";
+    // But always writing styles one by one with element.style.prop is too time consuming
+    // there are few alternative ways to write CSS effectively
+    // 1. `element.style.cssText`
+    anchorLink.style.cssText =
+      "color: teal; font-size: 18px; font-weight: bold; text-decoration: none; background-color: #e0f7fa";
+    // 2. `Object.assign() with element.style`
+    Object.assign(anchorLink.style, {
+      color: "teal",
+      fontSize: "18px",
+      fontWeight: "bold",
+      textDecoration: "none",
+      backgroundColor: "#e0f7fa",
+    });
+
+    /** Selecting Elements by Class Name
+     * document.getElementsByClassName(className) is a method that returns a live HTMLCollection
+     * of all elements in the document with the specified class name.
+     * If no elements match, it returns an empty collection (not null).
+     * - Returns: HTMLCollection (array-like, but not a real array).
+     * - You can access elements using index notation (e.g., [0], [1], etc.).
+     * - To use array methods like forEach, convert it: Array.from(collection).
+     */
+    const para3 = document.getElementsByClassName("para3");
+    console.log(para3); // Output: HTMLCollection [p#intro.para1, intro: p#intro.para1]
+    console.log(para3 instanceof HTMLCollection); // Output: true
+    console.log(para3 instanceof HTMLElement); // false
+
+    /** Selecting Elements by Name
+     * `document.getElementsByName(name)` is a method that returns a static NodeList
+     * of all elements in the document with a matching `name` attribute.
+     * It is mostly used with form elements like <input>, <textarea>, <select>, etc.
+     * - Returns: NodeList (not live, unlike getElementsByClassName).
+     * - You can loop over it directly or convert it with Array.from() if needed.
+     */
+    const emailInputs = document.getElementsByName("emailInput");
+    console.log(emailInputs); // Ouput: NodeList(2)
+    emailInputs.forEach((element) => console.log(element.className));
+
+    /** HTMLCollection vs NodeList in JavaScript
+     * HTMLCollection: A live, array-like collection of elements—usually returned by methods like `getElementsByClassName()` or `getElementsByTagName()`. Updates automatically if DOM changes.
+     * NodeList: A collection of nodes (elements, text, comments)—returned by `querySelectorAll()`, `childNodes`, or `getElementsByName()`. Can be live or static depending on source.
+     * Key Difference: HTMLCollection contains only elements; NodeList can include any node type. HTMLCollection is always live; NodeList is usually static.
+     * Both are not real arrays (no map/filter); convert with `Array.from()` or `[...collection]` to use full array methods.
+     */
+
+    /** More selectors
+     * document.getElementsByTagName(tag) → Returns a live HTMLCollection of elements with the given tag name (e.g., "p", "div").
+     * document.getElementsByTagNameNS(ns, tag) → Returns elements by tag name within a specific XML namespace (used in SVG, XML).
+     * document.getRootNode() → Returns the root node (usually the Document object) of the document or a specific element.
+     */
+
+    /** querySelector and querySelectorAll
+     * `querySelector(selector)` → Returns the first element matching any valid CSS selector
+     * (or null if none found).
+     * `querySelectorAll(selector)` → Returns all matching elements as a static NodeList.
+     * Supports complex CSS selectors like classes, IDs, tags, attributes, nesting
+     * (e.g. `.card > h2`).
+     * NodeList returned by `querySelectorAll()` supports forEach; useful for batch actions.
+     */
+
+    const firstSubHeading = document.querySelector("h2");
+    console.log(firstSubHeading); // Output: h2#sh-1.sub-heading-1
+    console.log(typeof firstSubHeading); // object
+    console.log(firstSubHeading instanceof HTMLElement); // true
+    console.log(
+      firstSubHeading instanceof NodeList,
+      firstSubHeading instanceof HTMLCollection
+    ); // false   flase
+    // querySelectorAll
+    const subHeadings = document.querySelectorAll("h2");
+    console.log(subHeadings); // NodeList(2) [h2#sh-1.sub-heading-1, h2#sh-2.sub-heading-2]
+    console.log(subHeadings instanceof NodeList); // true
+    // selecting elements with css selector like syntax
+    const emailInputBox = document.querySelector("input[type='email']");
+    console.log(emailInputBox); // Ouput: <input type="em...der="Enter your email">
+
+    // Accessing elements in NodeList
+    subHeadings[1].style.color = "darkgreen"; // Access like arrays
+
+    // Accessing Child elements
+    const esList = document.getElementsByClassName("es-versions");
+    console.log(esList);
+    const listItems = esList[0].children;
+    const listItems2 = esList[0].childNodes;
+    console.log(listItems, listItems2);
+    // element.children returns only the child elements (no text, comments).
+    // element.childNodes returns all child nodes: elements, text, comments.
+    // children → HTMLCollection | childNodes → NodeList
+    // Use .children when you only care about real elements.
+    // Use .childNodes when you need everything, even whitespace.
+
+    // Manipulating contents
+    // Here for our usecase, we will go with the variable with .children
+    // as listItems variable contains HTMLCollection, so we have to first
+    // convert it to array and then we can perform array operations on it
+    const listItemsArray = Array.from(listItems);
+    console.log(listItemsArray); // (4) [li.v-item-1, li.v-item-2, li.v-item-3, li.v-item-4]
+    listItemsArray.forEach((item) => {
+      item.innerText += ` ECMAScript Vesrion`;
+    });
+  </script>
+</html>
