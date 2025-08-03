@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adding New Elements In DOM</title>
+  </head>
+  <body style="background-color: #212121; color: #ffff">
+    <div class="parent">
+      <div class="day">Monday</div>
+      <div class="day">Tuesday</div>
+      <div class="day">Wednesday</div>
+      <div class="day">Thursday</div>
+    </div>
+  </body>
+  <script>
+    // Accessing Child elements from parent
+    // Selecting parent element
+    const parent = document.querySelector(".parent");
+    console.log(parent); // Output: <div class="parent">...</div> or div.parent
+    const childElements = parent.children;
+    console.log(childElements); // HTMLCollection(4) [div.day, div.day, div.day, div.day]
+    // As we know that HTMLCollection is not a complete array.
+    // But some array methods like length, accessing via index are available.
+    // console.log(childElements.length); // Output: 4
+    // console.log(childElements[0].innerText); // Output: Monday
+    // we can also use for loop on it
+    for (let i = 0; i < childElements.length; i++) {
+      console.log(childElements[i].innerText); // Ouput: Monday Tuesday Wednesday Thursday
+    }
+    childElements[1].style.color = "lightgoldenrodyellow";
+    // Exploring more properties
+    console.log(parent.firstElementChild); // First element, <div class="day">Monday</div>
+    console.log(parent.lastElementChild); // last element, <div class="day">Thursday</div>
+
+    // Accessing parent element from child
+    const dayOne = document.querySelector(".day");
+    console.log(dayOne); // <div class="day">Monday</div>
+    console.log(dayOne.parentElement); // parent element, <div class="parent">...</div>
+    console.log(dayOne.nextElementSibling); // next element, <div class="day">Tuesday</div>
+    console.log(dayOne.nextSibling); // Output: #text
+    console.log(dayOne.previousElementSibling); // previous element, null
+    console.log(dayOne.previousSibling); // previous dom node, #text
+    /**
+     * `.nextElementSibling` and `.previousElementSibling` return the next/previous HTML element nodes only.
+     * If an element is the first child, .previousElementSibling will be null because there's no earlier element.
+     * `.nextSibling` and `.previousSibling` return any node, including text nodes (like whitespace or newlines).
+     * The HTML code from this file, when converted to DOM, it is like:
+     parent
+          ├── #text ("\n  ")       ← whitespace before Monday
+          ├── <div class="day">Monday</div>
+          ├── #text ("\n  ")       ← whitespace before Tuesday
+          ├── <div class="day">Tuesday</div>
+    */
+    // Checking all the nodes of DOM
+    console.log(parent.childNodes);
+    // Output: NodeList(9) [text, div.day, text, div.day, text, div.day, text, div.day, text]
+
+    // Creating/Adding New Element in DOM
+    const div = document.createElement("div");
+    console.log(div);
+    div.className = "content";
+    div.id = Math.floor(Math.random() * 10);
+    div.setAttribute("title", "Generated title");
+    div.style.padding = "20px";
+    div.style.color = "red";
+    const addText = document.createTextNode("Weeks");
+    div.appendChild(addText);
+    document.body.childNodes[1].appendChild(div);
+  </script>
+</html>
