@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit & Remove Elements</title>
+  </head>
+  <body style="background-color: #3c3c3c; color: white">
+    <ul class="languages">
+      <li>Javascript</li>
+    </ul>
+  </body>
+  <script>
+    /**
+     * addElementToList()
+     * It Creates a new HTML element (e.g. <li>) and inject it into the <ul class="languages">
+     * How it works:
+     *   1. document.createElement(tagName) → creates the requested node.
+     *   2. element.innerHTML = textContent  → sets innerHTML so the string
+     *      is parsed as **HTML** (not plain text).
+     *   3. Query the list with document.querySelector('.languages').
+     *   4. Append the element with list.appendChild().
+     */
+    function addElementToList(textContent, tagName) {
+      const element = document.createElement(tagName);
+      element.innerHTML = `${textContent}`;
+      const list = document.querySelector(".languages");
+      list.appendChild(element);
+    }
+    /**
+     * addElementToListOptimized
+     * -------------------------
+     * Purpose: Same goal—add a new element to the languages list—but in a aster and safer way.
+     * How it works:
+     *   1. document.createElement(tagName) → creates the node.
+     *   2. document.createTextNode(textContent) → produces a *text* node
+     *      that treats the string as literal characters.
+     *   3. element.appendChild(textNode)  → attaches the text.
+     *   4. Query and append exactly as before.
+     */
+    addElementToList("Go", "li");
+    function addElementToListOptimized(textContent, tagName) {
+      const element = document.createElement(tagName);
+      element.appendChild(document.createTextNode(textContent));
+      const list = document.querySelector(".languages");
+      list.appendChild(element);
+    }
+    addElementToListOptimized("Python", "li");
+    // 🔑 Why addElementToListOptimized wins:
+    //
+    // 1. Security  → text is treated literally, so "<script>" shows up
+    //    on screen instead of running.
+    //
+    // 2. Performance → no innerHTML parsing; the browser just tacks on a
+    //    single Text node (micro-optimisation that scales in loops).
+    //
+    // 3. Reliability → automatic escaping of <, >, &, etc. prevents layout
+    //    breakage and weird bugs.
+    //
+    // Bottom line: Use innerHTML only when you *intend* to inject real HTML;
+    // otherwise prefer createTextNode for plain strings.
+
+    // Editing Values
+    const list = document.querySelector(".languages");
+    const listItems = list.children;
+    listItems[1].innerHTML = "Mojo";
+    // OR
+    const sencondLanguage = document.querySelector("li:nth-child(2)");
+    const newList = document.createElement("li");
+    newList.appendChild(document.createTextNode("Ruby"));
+    sencondLanguage.replaceWith(newList);
+    // OR
+    const firstLang = document.querySelector("li:first-child");
+    firstLang.outerHTML = "<li>C++</li>";
+
+    // Removing values
+    document.querySelector("li:last-child").remove();
+  </script>
+</html>
