@@ -1,33 +1,34 @@
 const buttons = document.querySelectorAll(".button");
-const body = document.querySelector("body");
+const body = document.getElementsByTagName("body")[0];
+console.log(buttons);
+console.log(body);
+// A clean, concise and scalable code
 buttons.forEach((button) => {
-  button.style.cursor = "pointer";
-
-  return button.addEventListener("click", (event) => {
-    switch (event.target.id) {
-      case "lightblue":
-        body.style.background = "lightblue";
-        break;
-      case "lightseagreen":
-        body.style.background = "lightseagreen";
-        break;
-      case "lightpink":
-        body.style.background = "lightpink";
-        break;
-      case "lightcoral":
-        body.style.background = "lightcoral";
-        break;
-      default:
-        body.style.background = "white";
-        break;
-    }
-
-    /*but there is a more smart approach, as know the value of id and background is same, we can use 
-    following approach instead of using switch or if...else:
-    button.addEventListener("click", (event) => {
-      const color = button.id;
-      return (body.style.background = color);
-    });
-    */
+  button.addEventListener("click", (event) => {
+    body.style.backgroundColor = button.id;
   });
 });
+
+// Longer, and static check code
+// buttons.forEach((button) => {
+//   button.addEventListener("click", (event) => {
+//     switch (event.target.id) {
+//       case "lightblue":
+//         body.style.backgroundColor = "lightblue";
+//         break;
+//       case "lightcoral":
+//         body.style.backgroundColor = "lightcoral";
+//         break;
+//       case "lightpink":
+//         body.style.backgroundColor = "lightpink";
+//         break;
+//       case "lightseagreen":
+//         body.style.backgroundColor = "lightseagreen";
+//         break;
+
+//       default:
+//         body.style.backgroundColor = "transparent";
+//         break;
+//     }
+//   });
+// });
