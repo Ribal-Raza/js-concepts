@@ -50,7 +50,7 @@ button {
 #weight-guide {
   margin-top: 2rem;
   padding: 2rem;
-  background-color: #eee;
+  background-color: #ffff;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -62,4 +62,20 @@ h3 {
 
 p {
   margin-bottom: 0.5rem;
+}
+.underweight {
+  color: #cdab00;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.normal {
+  color: #008000;
+  font-size: 18px;
+  font-weight: bold;
+}
+.overweight {
+  color: #ff0000;
+  font-size: 18px;
+  font-weight: bold;
 }
