@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timers API</title>
+  </head>
+  <body>
+    <h1 id="heading">Hello World!</h1>
+    <button id="btnStart">Start</button>
+    <button id="btnStop">Stop</button>
+  </body>
+  <script>
+    /**
+     * The `window` object (in browsers) contains:
+     *  - DOM methods
+     *  - Web APIs
+     *  - Your variables and functions
+     *
+     * One of its Web APIs is the **Timers API**, which includes:
+     *  - setTimeout / clearTimeout
+     *  - setInterval / clearInterval
+     */
+
+    // ---------------- setTimeout ----------------
+    // setTimeout() runs a function **once** after a given delay (in milliseconds).
+    // Syntax: setTimeout(handler, delay, arg1, arg2, ...)
+    // - handler: function to execute
+    // - delay: time in ms to wait before running (1000ms = 1s)
+    // - arg1, arg2, ...: (optional) arguments passed to the callback
+
+    console.log("Before setTimeout");
+
+    setTimeout(function () {
+      console.log("Message after 2 seconds");
+    }, 2000);
+
+    console.log("After setTimeout");
+    // Output order:
+    // 1. Before setTimeout
+    // 2. After setTimeout
+    // 3. (after 2 seconds) Message after 2 seconds
+
+    // ---------------- clearTimeout ----------------
+    // clearTimeout() cancels a scheduled timeout **before it runs**.
+    // Syntax: clearTimeout(timerId)
+    // - timerId: the value returned by setTimeout()
+
+    // Store the setTimeout ID in a variable so we can cancel it later:
+    let changeHeading = setTimeout(() => {
+      document.getElementById("heading").innerText = "I am learning Async";
+    }, 2500);
+
+    console.log("setTimeout ID for changeHeading:", changeHeading);
+
+    // Example: stop the heading from changing when a button is clicked
+    document.getElementById("btnStop").addEventListener("click", () => {
+      clearTimeout(changeHeading);
+    });
+
+    // Passing arguments to setTimeout() callback
+    setTimeout(
+      (name) => {
+        console.log(`My name is: ${name}`);
+      },
+      3000,
+      "John" // <-- argument passed to the callback
+    );
+
+    // ---------------- setInterval ----------------
+    // setInterval() repeatedly runs a function after a fixed delay (in milliseconds) until you stop it..
+    // Syntax: setInterval(handler, delay, arg1, arg2, ...);
+    // - hanler: function to execute
+    // - delay: time between executions in milliseconds.
+    // - arg1, arg2, ...: (optional) arguments passed to the callback
+    // let repeat = setInterval(() => {
+    //   console.log("I am running every 2 seconds");
+    // }, 2000);
+
+    // ---------------- clearInterval ----------------
+    // clearInterval() cancels a scheduled interval.
+    // Syntax: clearInterval(intervalId)
+    // - intervalId: the value returned by setInterval()
+    //clearInterval(repeat);
+
+    // Example: Starting and stopping a timer
+    let count = document.createElement("p");
+    const heading = document.getElementById("heading");
+    count.innerText = 0;
+    let intervalId;
+    document.getElementById("btnStart").addEventListener("click", () => {
+      heading.appendChild(count);
+      intervalId = setInterval(() => {
+        count.innerText = Number(count.innerText) + 1;
+        console.log(count.innerText);
+      }, 1000);
+    });
+    document.getElementById("btnStop").addEventListener("click", () => {
+      clearInterval(intervalId);
+    });
+  </script>
+</html>
