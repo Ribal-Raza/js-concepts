@@ -1,36 +1,49 @@
-/* As we know, there are two major execution contexts, GEC and FEC. GEC presists in call stack at the very
-bottom which means it will be available throughout the execution of code. FECs get created and get stacked
-in and out of the call stack in LIFO order.
-To refer the current context, 'this' keyword comes handy. If we write 'this' in GEC of browser console,
-it will give window object because GEC in browser refers to windows object, and in case of Node.js, it will
-give empty object. If we write 'this' in a function, it will refer to that function's FEC.
+/** `this` & Execution Contexts
+ * The engine creates a Global Execution Context (GEC) first and Function Execution Contexts (FECs) as functions run.
+ * The call stack is LIFO; the GEC is removed when the program finishes.
+ * `this` is not chosen by “who is on top of the stack.”
+ * It depends on how the function is called.
+ * (arrow functions are the exception—they capture this lexically).
+ * Top-level this:
+ * - Browser script (non-module): this === window
+ * - ES modules (browser & Node): this === undefined
+ * - Node CommonJS file: this === module.exports
+ * - Node REPL: this === global
+ * Inside regular functions:
+ * - Plain call fn() → sloppy: global object; strict: undefined
+ * - Method call obj.fn() → this === obj
+ * Arrow functions:
+ * - No own this; they use the this of the surrounding (defining) scope.
+ */
 
-What if we write 'this' keyword in a function where we are calling another function, and that called
-function is at top of the call stack, where will 'this' refer? Let's create this scenerio and find out.*/
-
-// SetProductPrice is a constructor which sets price
-function SetProductPrice(price) {
-  this.price = price;
-}
-// AddProduct sets name, quantity and price. But in setting price, it calls SetProductPrice.
-function AddProduct(name, quantity, price) {
-  this.name = name;
-  this.quantity = quantity;
-  SetProductPrice(price);
-}
-//let's add a product with AddProduct, on paper, everything should fine
-const milk = new AddProduct("Pure Milk", "1 Liter", "300");
-console.log(milk); // Output: AddProduct { name: 'Pure Milk', quantity: '1 Liter' }
-// milk is created but price is missing, reason to that is SetProductPrice is not being called internally
-// to call SetProductPrice in AddProduct, we have to use "call()" method
-// so following code method will utilize call method and everything will work fine
-function SetUsername(username) {
+// Let's find out where does `this` refers in function within function
+function setUsername(username) {
   this.username = username;
 }
-function CreateUser(username, email, password) {
-  SetUsername.call(this, username); // in call, first parameter 'this' refers to FEC of CreateUser
+function createUser(username, email, password) {
+  // setting user name with another constructor
+  setUsername(username);
   this.email = email;
   this.password = password;
 }
-const user1 = new CreateUser("Raza", "raza@talk.com", "14112");
-console.log(user1); // Output: CreateUser {username: 'Raza',email: 'raza@talk.com',password: '14112'}
+const user1 = new createUser("John", "john@js.js", "123");
+console.log(user1); // {email: 'john@js.js', password: '123' }
+console.log(user1.username); // Undefined
+// user1.username is missing because setUsername() was called as a plain function,
+// so inside it `this` was the global (or undefined in strict mode), not the new user object.
+// As a result, `this.username` didn’t write to user1 (it set a global or threw in strict mode).
+
+// To fix this issuse, explicitly bind `this` when calling constructor, using call()
+// Understanding with another example
+function setProductName(productName) {
+  this.productName = productName;
+}
+function createProduct(productName, price, quantity) {
+  // now explicitly binding `this` with call()
+  setProductName.call(this, productName);
+  this.price = price;
+  this.quantity = quantity;
+}
+const product1 = new createProduct("Laptop", 1000, 5);
+console.log(product1); // {productName: 'Laptop', price: 1000, quantity: 5}
+console.log(product1.productName); // Laptop
