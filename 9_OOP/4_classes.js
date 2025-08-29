@@ -1,33 +1,41 @@
-/* Prototypes, Contructors, Inheretance are major components deep-down/behind the scenes in JS. Classes
-are syntactical suger (familier or easy-to-write or clean) introduced in EcmaScript6+. There is no such 
-thing as class or classes deep down in JS. 
-'class' keyword is available in JS now. We can make classes and their constructors using 'class' keyword.
-We can add different properties/methods/functions in classes which is more clean way to write code instead
-of prototypes. Every class takes a constructors function which is initialized whenever a new instance of
-class is created with 'new' keyword. We can name this constructor function anything but to get less
-confused, we use 'constructor' keyword as a name for constructor functions.*/
+/** Classes & Constructors (ES6+)
+ * JavaScript is prototype-based. `class` mostly provides cleaner syntax over constructor functions
+ * and prototypes, but it also adds real semantics:
+ * - strict mode class bodies
+ * - TDZ (Temporal Dead Zone) for class bindings
+ * - new-only constructors
+ * - non-enumerable methods
+ * - private fields/methods (#).
+ * Constructor:
+ * Optional in base classes; if omitted, a default constructor(){} is used.
+ * In subclasses (class Admin extends User), you must call super(...) before using this.
+ * Notes:
+ * - Class declarations are in a temporal dead zone until evaluated (can’t use them early).
+ * - Calling a class without new throws a TypeError.
+ * - Methods defined in the class body are non-enumerable by default.
+ */
 
+// Defining a User class
 class User {
-  constructor(name, email, password) {
-    this.name = name;
+  constructor(username, email, password) {
+    this.username = username;
     this.email = email;
     this.password = password;
   }
-  // there is no need to write function keyword in class' function, so it is called method
   encryptPassword() {
-    return `${this.password}abc`;
+    const splittedPassword = new String(this.password).split("");
+    return splittedPassword.reverse().join("");
   }
-
   changeUserName() {
-    return `${this.name.toUpperCase()}`;
+    return this.username.toUpperCase();
   }
 }
-
-const user1 = new User("Ahmad", "ahmad@jmail.com", "090");
-console.log(user1); // user has been created,
-console.log(user1.encryptPassword());
-console.log(user1.changeUserName());
-
+const user1 = new User("Emilia", "emilia@zoit.com", "abc123");
+console.log(`---------Class Constructor Method--------\n${user1}`);
+console.log(`Encrypted Pasword: ${user1.encryptPassword()}`);
+console.log(
+  `Changed username ${user1.username} to Upper case: ${user1.changeUserName()}`
+);
 // All the above code can be achieved by using prototypes and behind the scenes prototypes are used in JS
 // so behind the scenes, above code with classes would be working like following:
 function CreateUser(name, email, password) {
@@ -36,14 +44,17 @@ function CreateUser(name, email, password) {
   this.password = password;
 }
 CreateUser.prototype.encryptPassword = function () {
-  return `${this.password}abc`;
+  const splittedPassword = new String(this.password).split("");
+  return splittedPassword.reverse().join("");
 };
 
 CreateUser.prototype.changeUserName = function () {
   return `${this.name.toUpperCase()}`;
 };
 
-const user2 = new CreateUser("ahsan", "ahsan@zoit.com", "klok89");
-console.log(user2);
-console.log(user2.encryptPassword());
-console.log(user2.changeUserName());
+const user2 = new CreateUser("John", "ahsan@zoit.com", "def456");
+console.log(`---------Constructor Function Method--------\n${user2}`);
+console.log(`Encrypted Password: ${user2.encryptPassword()}`);
+console.log(
+  `Changed username ${user2.username} to Upper case: ${user2.changeUserName()}`
+);
