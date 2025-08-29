@@ -1,123 +1,161 @@
-/* Everything in javascript is treated as an object. Whether we define a varibale of data type number, 
-string, array, object litteral, and boolean OR we create a function, everything is treated as an object
-behind the scenes. That's the reason we can use methods like map(), foreach(), filter(), toUpperCase(),
-etc on different data types varibales directly.
-As everything is treated as object, so we need prototypes to inject properties/methods in those objects.
-*/
+/** Prototypes in JavaScript
+ * =========================
+ * Prototype is an object that other objects can inherit properties and methods from.
+ * - JavaScript uses prototype-based inheritance.
+ * - Every ordinary object has an internal [[Prototype]] whose value is
+ *   either another object or null.
+ * Property lookup:
+ * 1) JS looks for the property on the object itself.
+ * 2) If not found, it follows the [[Prototype]] chain.
+ * 3) The chain stops at [[Prototype]] === null.
+ * Example (Array instance in devtools):
+ * const dcHeros = ["batman", "flash"];
+ * - dcHeros → [[Prototype]]: Array.prototype (built-in array methods like push, map, …)
+ * - Array.prototype → [[Prototype]]: Object.prototype (toString, hasOwnProperty, …)
+ * - Object.prototype → [[Prototype]]: null (end of chain)
+ * Notes:
+ * - Primitives (string, number, boolean, bigint, symbol) are not objects,
+ *   but when you access a method like "abc".toUpperCase(), JS temporarily
+ *   wraps the value (String object) and uses String.prototype.
+ * - Functions are objects too; a function object’s [[Prototype]] is
+ *   Function.prototype (separate from its .prototype property used for
+ *   instances created via `new`).
+ * In short:
+ * Prototypes let JavaScript share behavior via a chain, instead of copying
+ * methods onto every object.
+ */
 
-//In following constructor function, we are passing price and name of a product to an object
-function Product(name, price) {
-  this.name = name;
-  this.price = price;
+// Let's understand with interesting scenerios
+// we create a simple function that accepts a number and multiply it by 2
+function multiplyByTwo(num) {
+  return num * 2;
+}
+console.log(multiplyByTwo(5)); //Ouptut: 10
+// Functions in JS are objects (callable objects).
+// That means we can set properties on them like we do on normal objects:
+multiplyByTwo.power = 2;
+console.log(multiplyByTwo.power); // Output: 2
+
+// Every normal function in JS automatically has a .prototype property.
+// This is an object that will be used if the function is called with `new`.
+console.log(multiplyByTwo.prototype); // Output: {}
+// Why empty?
+// Because we haven’t added anything to it yet.
+// By default, it only contains a hidden "constructor" property linking back to the function.
+// If we plan to use the function as a constructor, we put shared methods on its .prototype.
+// Let's check if hidden constructor in prototype links back to function
+console.log(multiplyByTwo.prototype.constructor == multiplyByTwo); // Output: true
+console.log(multiplyByTwo.prototype.constructor); // Output: [Function: multiplyByTwo] { power: 2 }
+
+// Constructor function for creating new users
+function CreateUser(username, score) {
+  // 'this' refers to the new object being created (when using 'new')
+  // username is just a parameter.
+  // this.username assigns the parameter value to the new object's property.
+  this.username = username; // set property 'username'
+  this.score = score; // set property 'score'
 }
 
-/* now to inject different properties/methods in this constructor function which returns an object, we use
-prototype. We just define a function and with dot notation, we can access the prototype, and by again using
-dot notation we can write any function or methode*/
-Product.prototype.incrementPriceBy1 = function () {
-  this.price++;
-};
-Product.prototype.printProductDetails = function () {
-  console.log(`${this.name}'s price is: ${this.price} Rs.`);
+// Shared method defined on the prototype:
+// This way all instances of CreateUser share ONE copy of incrementScore
+CreateUser.prototype.incrementScore = function () {
+  // Always use 'this.score' to access the score of the current object
+  this.score++;
 };
 
-// now we can easily create objects of Product with 'new' keyword and we can also access prototype methods
-const product1 = new Product("KetchUp", 100);
-const product2 = new Product("Chocolate", 40);
-product1.printProductDetails();
-product2.incrementPriceBy1();
-product2.printProductDetails();
+// ------------------------
+// Using the constructor with 'new'
+// ------------------------
+const user1 = new CreateUser("John", 20);
+console.log(user1); // { username: 'John', score: 20 }
 
-/* Function is a function but also an object. Same is the case with all variables and data types in JS.
-So everything has a prototype and we can inject different values and methods in it. */
+user1.incrementScore();
+console.log(user1); // { username: 'John', score: 21 }
 
-//Let's start with a simple example of adding a function in an object
-let myProduct = {
-  id: 202,
-  title: "Supreme Cooking Ghee",
-  quantity: "1 Liter",
-  price: 300,
-  getProductDetails: function () {
-    console.log(
-      `${this.title}\nQuantity: ${this.quantity}\nPrice: ${this.price} Rs.`
-    );
-  },
-};
-//now I want to add show price function to myProduct object, I can simply use dot notation
-myProduct.showPrice = function () {
-  console.log(`Price is ${this.price}`);
-};
-myProduct.showPrice();
+/** How `new` works behind the scenes:
+ * 1. Creates a fresh empty object (newInstance).
+ * 2. Sets newInstance.[[Prototype]] = Constructor.prototype.
+ * 3. Calls the constructor with `this = newInstance` (passing arguments).
+ * 4. If constructor returns an object → that object is returned.
+ *    Otherwise → newInstance is returned.
+ */
 
-// but I want to add a function so whenever I create an object, I don't have to add it manually
-// to do this, we have to goto top level so all the upcoming object can inherit
-Object.prototype.showContents = function () {
-  console.log("Here are contents:", this);
-};
+// ------------------------
+// What happens if we forget 'new'
+// ------------------------
+const user2 = CreateUser("Alice", 15);
+// Without 'new', 'this' inside CreateUser does NOT refer to a new object.
+// In strict mode → 'this' is undefined → TypeError
+// In sloppy mode → 'this' refers to the global object (window in browsers).
+// So instead of creating a user object, it pollutes the global scope!
 
-const myProduct2 = {
-  id: 201,
-  title: "Pure Milk",
-  quantity: "1 Liter",
-  price: 160,
-  getProductDetails: function () {
-    console.log(
-      `${this.title}\nQuantity: ${this.quantity}\nPrice: ${this.price} Rs.`
-    );
-  },
-};
-// as I have injected showContents() at top level, I can access it in myProduct2 or any other object
-myProduct2.showContents();
+console.log(user2); // undefined (because CreateUser doesn't return anything)
 
-// as we know everything is an object, I can access showContents() in any other variable of any datatype
-const products = ["Ghee", "Milk", "Chocolate"];
-products.showContents();
+// ===============================================
+// Prototypes in JavaScript (Practice + Challenge)
+// ===============================================
 
-// Interesting thing would be to check if I inject a function in top level Array with prototype, can I access it other datatypes? Let's find out
-Array.prototype.greetings = function () {
-  console.log(`Hello! Greetings`);
-};
-// it is clear that now I can access greeting() with any array
-products.greetings();
-// but I can't access greetings with any other data type varibale like myProduct2.greetings();
+// Challenge: Extend all strings with a method trueLength()
+// This should trim spaces and return the length without extra spaces.
+// (In real projects you’d just use str.trim().length, but here the goal
+// is to understand prototypes.)
 
-// So let's understand the inheritence with prototypes
-// let's suppose we have multiple objects, to share the properties between objects, we use __proto__
+// --- Exploring prototypes ---
+const heros = ["spiderman", "thor"];
+const herosPowers = {
+  thor: "Hammer",
+  spiderman: "Web",
+};
+// 1. All objects eventually inherit from Object.prototype.
+// So if we add a method there, it's available everywhere.
+Object.prototype.abc = function () {
+  console.log(`abc is present in all objects`);
+};
+// Note: Extending Object like this is not recommended in real projects because it pollutes all objects.
+herosPowers.abc(); // Output: abc is present in all objects
+heros.abc(); // Output: abc is present in all objects (array → Array.prototype → Object.prototype)
 
-const user = {
-  id: 1099,
-  name: "Raza",
-  age: "24",
+// 2. But if we add to Array.prototype, it’s only for arrays:
+Array.prototype.heyAbc = function () {
+  console.log(`heyAbc is present in all arrays`);
 };
-const userStatus = {
-  isLoggedIn: true,
-  isOnline: true,
-  __proto__: user,
-};
-const userSupport = {
-  assignment: "Prototypes",
-  isStuck: true,
-  __proto__: userStatus,
-};
-// so userStatus object has inherited the properties of user, and so userStatus has eventually inherited properties of userStatus and user, it means userSupport can access info or methods of user and userStatus
-// to access isLoggedIn with userSupport, we can use dot notation and write userSupport.__proto__.isLoggedIn
-console.log(userSupport.__proto__.isLoggedIn);
-console.log(userSupport.__proto__.__proto__.id);
+// Now let's try
+heros.heyAbc(); // Output: heyAbc is present in all arrays
+// herosPowers.heyAbc(); // Error: not available on plain objects
 
-// we can also assign proto outside the object body
-let use = {
-  isInUse: true,
-  condition: "Good",
-};
-use.__proto__ = user;
-console.log(use.__proto__.name);
+// --- Prototype inheritance ---
+const User = { username: "abc", email: "abc@cba.com" };
+const Teacher = { workingHours: "9AM-5PM" };
+const TeachingSupport = { isAvailable: true };
 
-/*but this __proto__ is outdated syntax, instead today we have setPrototypeOf() function which takes two 
-parameter, first parameter is the child object which will inherit the properties and second is the parent*/
-let courses = {
-  course1: "DOM Manipulation",
-  course2: "Javascript",
-  course3: "React",
+// Legacy way (not recommended): __proto__
+const TASupport = {
+  createAssignments: "New Assignment",
+  fullTime: true,
+  __proto__: TeachingSupport, // inherits isAvailable
 };
-Object.setPrototypeOf(user, courses); // now user has access to courses
-console.log(user.course1);
+console.log(TASupport.isAvailable); // true
+
+// Linking prototypes dynamically:
+Teacher.__proto__ = User; // legacy style
+console.log(Teacher.username); // abc
+
+// Modern, preferred syntax:
+Object.setPrototypeOf(TeachingSupport, Teacher);
+console.log(TeachingSupport.workingHours); // 9AM-5PM
+console.log(TeachingSupport.email); // abc
+
+// --- Custom prototype method on String ---
+String.prototype.trueLength = function () {
+  console.log(`True Length of string is ${this.trim().length}.`);
+};
+const hey = "Hi there         ";
+console.log(`Apparent Length: ${hey.length}`); // 17
+hey.trueLength(); // 8
+
+// --- Key Take Aways ---
+// - Object.prototype is the root of most objects.
+// - Extending Object.prototype affects ALL objects (use with caution).
+// - Prototypes let you share methods across instances.
+// - Legacy: __proto__ ; Modern: Object.setPrototypeOf / Object.create.
+// - You can safely extend built-in prototypes in practice code, but avoid in production.
