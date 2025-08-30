@@ -1,13 +1,21 @@
 /** Inheritance with classes
- * `extends` wires a prototype chain: instance lookup climbs Child → Parent → Object → null.
- * In subclass constructors, super(...) must run before you use this.
- * Overriding lets a child replace a parent method; super.method() calls the parent’s version.
- * static fields/methods live on the class (constructor),
- * not on instances, and are inherited along the constructor chain.
+ * Inheritance = reuse + extension.
+ * If an object/class doesn’t have a property, JS looks up its parent.
+ * Why use inheritance?
+ * To avoid duplication, share behavior, and specialize children while keeping a common base.
+ * How inheritance works (class syntax):
+ * - `class Child extends Parent` wires a prototype chain for instances and a static chain for classes.
+ * - Instance lookup: instance → Child.prototype → Parent.prototype → Object.prototype → null.
+ * - `super(...)` in a subclass constructor must run before `this` is used (initializes the Parent part).
+ * - Overriding: child methods can replace parent methods; `super.method()` calls the parent version.
  */
 // Base class
 class Vehicle {
-  // Static = class-level data/utilities (shared by all instances)
+  /**`static` members live on the class (constructor) itself, not on instances.
+   * Use `static` for class-wide data/utilities (e.g., counters, registries, factories).
+   * Statics participate in the class (constructor) chain:
+   * `Object.getPrototypeOf(Truck) === Vehicle`, so statics can be inherited or shadowed.
+   */
   static nextId = 1;
   static types = ["vehicle"]; // describes this class; subclasses may shadow this
 
@@ -24,8 +32,12 @@ class Vehicle {
 }
 
 // Subclass Truck → single inheritance
+/** `extends` links Truck to Vehicle so instances of Truck delegate to
+ * Vehicle.prototype when needed.
+ * `super(name)` calls Vehicle’s constructor to initialize the Vehicle part before Truck uses `this`.
+ * In overrides, `super.info()` calls the parent method so you can compose child behavior on top.
+ */
 class Truck extends Vehicle {
-  // (Static fields live on the class; this shadows Vehicle.types for Truck)
   static types = ["vehicle", "truck"];
 
   constructor(name, capacityKg) {
@@ -39,7 +51,10 @@ class Truck extends Vehicle {
   }
 }
 
-// Subclass ElectricTruck → multilevel inheritance (Vehicle → Truck → ElectricTruck)
+/** Multilevel inheritance: Vehicle → Truck → ElectricTruck.
+ * Method lookup now climbs
+ * ElectricTruck.prototype → Truck.prototype → Vehicle.prototype → Object.prototype → null.
+ */
 class ElectricTruck extends Truck {
   // (We could also add static types here if we want to describe this class)
   // static types = ["vehicle", "truck", "electric-truck"];
@@ -59,8 +74,12 @@ class ElectricTruck extends Truck {
     return this.kWh * 3;
   }
 }
+/** Why no `call` here?
+ * - Class constructors are `new`-only; you can’t invoke them like regular functions to set `this`.
+ * - In subclasses, the correct way to initialize the parent is `super(...)`, not `Parent.call(this, ...)`.
+ * - Also, `this` is uninitialized in a subclass until `super(...)` runs—hence `super` must come first.
+ */
 
-// --- Try it ---
 const vehicle1 = new Vehicle("Scooter");
 const vehicle2 = new Truck("Boxer", 2000);
 const vehicle3 = new ElectricTruck("Volta", 3000, 150);
@@ -83,3 +102,12 @@ console.log(vehicle3.types); // undefined (instances don’t get statics)
 // Behind the scenes (prototype chains)
 // console.log(Object.getPrototypeOf(Truck.prototype) === Vehicle.prototype); // true
 // console.log(Object.getPrototypeOf(Truck) === Vehicle); // true
+/** Types of inheritance (in JS class terms):
+ * - Single: one parent per class (supported) → `class Truck extends Vehicle {}`.
+ * - Multilevel: chains of parents (supported) → `Vehicle → Truck → ElectricTruck`.
+ * - Hierarchical: multiple children share one parent (supported) → `Vehicle → (Truck, Car, Bike)`.
+ * - Multiple inheritance (one child extends multiple parents): not supported by default in JS classes.
+ * Why want it? To combine behaviors from multiple sources.
+ * Typical solution: composition/mixins
+ * (e.g., Object.assign(Child.prototype, mixinMethods) or function-based mixin wrappers).
+ */
